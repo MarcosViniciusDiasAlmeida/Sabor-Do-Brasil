@@ -8,7 +8,122 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <div class="container mt-3">
+        <div class="row">
+            <!-- Perfil (Vermelho) -->
+            <div class="col-md-3 perfil text-center">
+                <img src="imagens/logo_sabor_do_brasil.png" alt="Logo" class="img-fluid rounded">
+                <h6 class="mt-2">Sabor do Brasil</h6>
+                <div class="row likes mt-2">
+                    <div class="col-6">
+                        <span>9</span><br>
+                        <small>Quantidade Likes</small>
+                    </div>
+                    <div class="col-6">
+                        <span>12</span><br>
+                        <small>Quantidade Dislikes</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Publicações (Amarelo) -->
+            <div class="col-md-6 publicacoes">
+                <h5 class="text-center mb-3">Publicações</h5>
+                <!-- Borda total envolvendo todos os cards -->
+                <div class="p-3" style="border: 1.5px solid #ccc; border-radius: 10px; background: #fff;">
+                    <!-- Card 1 -->
+                    <div class="card publicacao-card mb-2" style="max-width: 320px; margin: 0 auto;">
+                        <img src="imagens/torresmo.jpg" class="card-img-top" alt="prato 01" style="height: 120px; object-fit: cover;">
+                        <div class="card-body p-2">
+                            <h6 class="card-title mb-1" style="font-size: 1rem;">Título do prato 01</h6>
+                            <div class="d-flex justify-content-between small">
+                                <span style="font-size: 0.9rem;">Local 01</span>
+                                <span style="font-size: 0.9rem;">Maceió-AL</span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <div>
+                                    <span style="font-size: 0.95rem;">👍 1</span>
+                                    <span style="font-size: 0.95rem;">👎 0</span>
+                                </div>
+                                <span style="font-size: 0.95rem;">💬 4</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="card publicacao-card mb-2" style="max-width: 320px; margin: 0 auto;">
+                        <img src="imagens/torresmo.jpg" class="card-img-top" alt="prato 02" style="height: 120px; object-fit: cover;">
+                        <div class="card-body p-2">
+                            <h6 class="card-title mb-1" style="font-size: 1rem;">Título do prato 02</h6>
+                            <div class="d-flex justify-content-between small">
+                                <span style="font-size: 0.9rem;">Local 02</span>
+                                <span style="font-size: 0.9rem;">Recife-PE</span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <div>
+                                    <span style="font-size: 0.95rem;">👍 3</span>
+                                    <span style="font-size: 0.95rem;">👎 1</span>
+                                </div>
+                                <span style="font-size: 0.95rem;">💬 2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="card publicacao-card mb-2" style="max-width: 320px; margin: 0 auto;">
+                        <img src="imagens/torresmo.jpg" class="card-img-top" alt="prato 03" style="height: 120px; object-fit: cover;">
+                        <div class="card-body p-2">
+                            <h6 class="card-title mb-1" style="font-size: 1rem;">Título do prato 03</h6>
+                            <div class="d-flex justify-content-between small">
+                                <span style="font-size: 0.9rem;">Local 03</span>
+                                <span style="font-size: 0.9rem;">Salvador-BA</span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <div>
+                                    <span style="font-size: 0.95rem;">👍 5</span>
+                                    <span style="font-size: 0.95rem;">👎 0</span>
+                                </div>
+                                <span style="font-size: 0.95rem;">💬 7</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fim da borda total -->
+            </div>
+
+            <!-- Login (Azul) -->
+            <div class="col-md-3 text-center login mt-5">
+                <button class="btn btn-warning text-white fw-bold" data-bs-toggle="modal" data-bs-target="#loginModal">Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Login -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">E-mail</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div id="loginError" class="text-danger d-none">Usuário ou senha incorreto</div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-warning text-white" id="loginButton">Entrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
     <script src="script.js"></script>
 </body>
