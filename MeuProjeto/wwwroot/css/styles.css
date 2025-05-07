@@ -1,0 +1,45 @@
+.perfil img {
+    width: 60px !important;
+    height: auto;
+    margin-bottom: 8px;
+}
+
+.perfil .nome-site h5,
+.perfil .quantidade h5,
+.perfil .quntidade h5 {
+    font-size: 0.9rem;
+    margin: 2px 0;
+}
+
+.perfil .row.likes {
+    margin-top: 4px;
+    margin-bottom: 0;
+}
+
+.perfil {
+    padding: 8px 0;
+}
+.borda
+{
+    width: max-content;
+}
+
+.btn-outline-warning {
+  border-color: #D97014;
+  color: #D97014;
+}
+
+.btn-outline-warning:hover {
+  background-color: #D97014;
+  color: #fff;
+}
+
+.btn-warning {
+  background-color: #D97014;
+  color: #FFFFFF;
+  border: none;
+}
+
+.btn-warning:hover {
+  background-color: #b85e10;
+}
