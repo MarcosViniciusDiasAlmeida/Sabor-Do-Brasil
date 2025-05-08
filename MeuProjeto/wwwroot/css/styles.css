@@ -43,3 +43,16 @@
 .btn-warning:hover {
   background-color: #b85e10;
 }
+
+.like-btn i, .dislike-btn i {
+    transition: color 0.2s, transform 0.2s;
+}
+.like-btn.liked i {
+    color: #FF0000;
+}
+.dislike-btn.liked i {
+    color: #FF0000;
+}
+.like-btn:hover i, .dislike-btn:hover i {
+    transform: scale(1.2);
+}
