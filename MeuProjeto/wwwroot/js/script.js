@@ -29,4 +29,52 @@ document.addEventListener("DOMContentLoaded", () => {
         loginForm.password.classList.add("is-invalid");
       }
     });
+  
+    for (let i = 1; i <= 3; i++) {
+        const likeBtn = document.getElementById(`like-btn-${i}`);
+        const dislikeBtn = document.getElementById(`dislike-btn-${i}`);
+  
+        if (likeBtn && dislikeBtn) {
+            const likeCountSpan = likeBtn.querySelector('.like-count');
+            const dislikeCountSpan = dislikeBtn.querySelector('.dislike-count');
+  
+            likeBtn.addEventListener("click", function () {
+                let likeCount = parseInt(likeCountSpan.textContent) || 0;
+                let dislikeCount = parseInt(dislikeCountSpan.textContent) || 0;
+  
+                if (likeBtn.classList.contains("liked")) {
+                    likeBtn.classList.remove("liked");
+                    likeCount--;
+                } else {
+                    likeBtn.classList.add("liked");
+                    likeCount++;
+                    if (dislikeBtn.classList.contains("liked")) {
+                        dislikeBtn.classList.remove("liked");
+                        dislikeCount--;
+                    }
+                }
+                likeCountSpan.textContent = likeCount;
+                dislikeCountSpan.textContent = dislikeCount;
+            });
+  
+            dislikeBtn.addEventListener("click", function () {
+                let likeCount = parseInt(likeCountSpan.textContent) || 0;
+                let dislikeCount = parseInt(dislikeCountSpan.textContent) || 0;
+  
+                if (dislikeBtn.classList.contains("liked")) {
+                    dislikeBtn.classList.remove("liked");
+                    dislikeCount--;
+                } else {
+                    dislikeBtn.classList.add("liked");
+                    dislikeCount++;
+                    if (likeBtn.classList.contains("liked")) {
+                        likeBtn.classList.remove("liked");
+                        likeCount--;
+                    }
+                }
+                likeCountSpan.textContent = likeCount;
+                dislikeCountSpan.textContent = dislikeCount;
+            });
+        }
+    }
   });
