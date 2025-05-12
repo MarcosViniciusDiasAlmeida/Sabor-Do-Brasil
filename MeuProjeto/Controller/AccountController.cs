@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using System.Threading.Tasks;
 
@@ -28,7 +29,10 @@ public class AccountController : ControllerBase
         if (await reader.ReadAsync())
         {
             // Login bem-sucedido
-            return Ok();
+            return Ok(new {
+                nome = reader["nome"].ToString(),
+                foto = reader["foto"].ToString()
+            });
         }
         else
         {
