@@ -111,7 +111,8 @@
 
             <!-- Login (Azul) -->
             <div class="col-md-3 text-center login mt-5">
-                <button class="btn btn-warning text-white fw-bold" data-bs-toggle="modal" data-bs-target="#loginModal">Entrar</button>
+                <button id="loginButton" class="btn btn-warning text-white fw-bold" data-bs-toggle="modal" data-bs-target="#loginModal">Entrar</button>
+                <button id="logoutButton" class="btn btn-warning text-white fw-bold w-100 d-none">Sair</button>
             </div>
         </div>
     </div>
@@ -139,7 +140,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-warning text-white" id="loginButton">Entrar</button>
+                    <button type="button" class="btn btn-warning text-white" id="loginSubmit">Entrar</button>
                 </div>
             </div>
         </div>
