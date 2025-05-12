@@ -3,7 +3,7 @@ USE init;
 -- Inserir usuários
 INSERT INTO `init`.`usuario` (`nome`, `email`, `senha`, `foto`) VALUES
 ('Ana Souza', 'ana@example.com', 'senha123', 'imagens\foto_usuario\usuario_01.jpg'),
-('Carlos Lima', 'carlos@example.com', '123456', '‪imagens\foto_usuario\usuario_02.jpg');
+('Carlos Lima', 'carlos@example.com', '123456', 'imagens\foto_usuario\usuario_02.jpg');
 
 -- Inserir empresas
 INSERT INTO `init`.`empresa` (`id`, `nome`) VALUES
