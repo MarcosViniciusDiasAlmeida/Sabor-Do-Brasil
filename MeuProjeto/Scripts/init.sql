@@ -87,8 +87,10 @@ CREATE TABLE IF NOT EXISTS `init`.`curtidas` (
     FOREIGN KEY (`id_publicacao`)
     REFERENCES `init`.`publicacao` (`id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
+    ON UPDATE CASCADE,
+  -- Adiciona uma chave única para garantir que não existam combinações duplicadas
+  CONSTRAINT `unique_like` UNIQUE (`id_usuario`, `id_publicacao`)
+) ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
