@@ -30,6 +30,7 @@ public class AccountController : ControllerBase
         {
             // Login bem-sucedido
             return Ok(new {
+                id = reader["id"],
                 nome = reader["nome"].ToString(),
                 foto = reader["foto"].ToString()
             });

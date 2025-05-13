@@ -14,10 +14,8 @@ INSERT INTO `init`.`empresa` (`id`, `nome`) VALUES
 INSERT INTO `init`.`publicacao` (`id`, `id_empresa`, `id_usuarioss`, `nome_prato`, `foto`, `local`, `cidade-estado`) VALUES
 (1, 1, 1, 'Feijoada', 'feijoada.jpg', 'Restaurante Central', 'São Paulo-SP'),
 (2, 2, 2, 'Moqueca Baiana', 'moqueca.jpg', 'Praia do Forte', 'Salvador-BA');
-
--- Inserir curtida
-INSERT INTO `init`.`curtidas` (`id_usuario`, `id_publicacao`, `curtidas`) VALUES
-(2, 1, 'Like');
+INSERT INTO `init`.`publicacao` (`id`, `id_empresa`, `id_usuarioss`, `nome_prato`, `foto`, `local`, `cidade-estado`) VALUES
+(3, 1, 1, 'Baião de Dois', 'baiao.jpg', 'Restaurante do Sertão', 'Fortaleza-CE');
 
 -- Inserir comentário
 INSERT INTO `init`.`comentarios` (`id_usuarios`, `id_publicacaoo`, `foto_perfil`, `descricao`) VALUES

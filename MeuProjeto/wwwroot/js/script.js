@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const loginButton = document.getElementById("loginButton"); // botão fora do modal (abre o modal)
   const loginSubmit = document.getElementById("loginSubmit"); // botão dentro do modal (envia o login)
   const logoutButton = document.getElementById("logoutButton");
@@ -116,43 +116,99 @@ document.addEventListener("DOMContentLoaded", () => {
       const likeCountSpan = likeBtn.querySelector('.like-count');
       const dislikeCountSpan = dislikeBtn.querySelector('.dislike-count');
 
-      likeBtn.addEventListener("click", function () {
-        let likeCount = parseInt(likeCountSpan.textContent) || 0;
-        let dislikeCount = parseInt(dislikeCountSpan.textContent) || 0;
+      likeBtn.addEventListener("click", async function () {
+        const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+        if (!usuario || !usuario.id) return;
+        const idPublicacao = i;
 
-        if (likeBtn.classList.contains("liked")) {
-          likeBtn.classList.remove("liked");
-          likeCount--;
-        } else {
-          likeBtn.classList.add("liked");
-          likeCount++;
-          if (dislikeBtn.classList.contains("liked")) {
-            dislikeBtn.classList.remove("liked");
-            dislikeCount--;
-          }
-        }
-        likeCountSpan.textContent = likeCount;
-        dislikeCountSpan.textContent = dislikeCount;
+        await fetch("/api/curtidas/like", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idUsuario: usuario.id, idPublicacao }),
+        });
+
+        await atualizarEstadoCurtidas(idPublicacao, likeBtn, dislikeBtn, likeCountSpan, dislikeCountSpan, usuario.id);
+        await atualizarLikesDislikesPerfil(usuario.id);
       });
 
-      dislikeBtn.addEventListener("click", function () {
-        let likeCount = parseInt(likeCountSpan.textContent) || 0;
-        let dislikeCount = parseInt(dislikeCountSpan.textContent) || 0;
+      dislikeBtn.addEventListener("click", async function () {
+        const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+        if (!usuario || !usuario.id) return;
+        const idPublicacao = i;
 
-        if (dislikeBtn.classList.contains("liked")) {
-          dislikeBtn.classList.remove("liked");
-          dislikeCount--;
-        } else {
-          dislikeBtn.classList.add("liked");
-          dislikeCount++;
-          if (likeBtn.classList.contains("liked")) {
+        await fetch("/api/curtidas/deslike", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idUsuario: usuario.id, idPublicacao }),
+        });
+
+        await atualizarEstadoCurtidas(idPublicacao, likeBtn, dislikeBtn, likeCountSpan, dislikeCountSpan, usuario.id);
+        await atualizarLikesDislikesPerfil(usuario.id);
+      });
+    }
+  }
+
+  // Atualiza o estado visual dos botões e as contagens do card
+  async function atualizarEstadoCurtidas(idPublicacao, likeBtn, dislikeBtn, likeCountSpan, dislikeCountSpan, idUsuario) {
+    // Busca contagem atualizada do card
+    const resp = await fetch(`/api/curtidas/contagem/${idPublicacao}`);
+    if (resp.ok) {
+      const data = await resp.json();
+      likeCountSpan.textContent = data.likes;
+      dislikeCountSpan.textContent = data.dislikes;
+    }
+
+    // Marca visualmente o botão correto
+    const respMinhas = await fetch(`/api/curtidas/minhas-curtidas/${idUsuario}`);
+    if (respMinhas.ok) {
+      const idsCurtidas = await respMinhas.json();
+      if (idsCurtidas.includes(idPublicacao)) {
+        likeBtn.classList.add("liked");
+        dislikeBtn.classList.remove("liked");
+      } else {
+        const respDeslikes = await fetch(`/api/curtidas/minhas-descurtidas/${idUsuario}`);
+        if (respDeslikes.ok) {
+          const idsDescurtidas = await respDeslikes.json();
+          if (idsDescurtidas.includes(idPublicacao)) {
+            dislikeBtn.classList.add("liked");
             likeBtn.classList.remove("liked");
-            likeCount--;
+          } else {
+            likeBtn.classList.remove("liked");
+            dislikeBtn.classList.remove("liked");
           }
         }
-        likeCountSpan.textContent = likeCount;
-        dislikeCountSpan.textContent = dislikeCount;
-      });
+      }
+    }
+  }
+
+  // Atualiza total de likes e dislikes do perfil
+  async function atualizarLikesDislikesPerfil(idUsuario) {
+    // Likes
+    const respLikes = await fetch(`/api/curtidas/total-likes/${idUsuario}`);
+    if (respLikes.ok) {
+      const data = await respLikes.json();
+      document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = data.total;
+    }
+    // Dislikes
+    const respDislikes = await fetch(`/api/curtidas/total-dislikes/${idUsuario}`);
+    if (respDislikes.ok) {
+      const data = await respDislikes.json();
+      document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = data.total;
+    }
+  }
+
+  // Ao carregar a página/logar, chame:
+  const usuario = JSON.parse(localStorage.getItem("usuarioLogado") || "null");
+  if (usuario && usuario.id) {
+    atualizarLikesDislikesPerfil(usuario.id);
+    for (let i = 1; i <= 3; i++) {
+      const likeBtn = document.getElementById(`like-btn-${i}`);
+      const dislikeBtn = document.getElementById(`dislike-btn-${i}`);
+      const likeCountSpan = likeBtn?.querySelector('.like-count');
+      const dislikeCountSpan = dislikeBtn?.querySelector('.dislike-count');
+      if (likeBtn && dislikeBtn && likeCountSpan && dislikeCountSpan) {
+        atualizarEstadoCurtidas(i, likeBtn, dislikeBtn, likeCountSpan, dislikeCountSpan, usuario.id);
+      }
     }
   }
 });
