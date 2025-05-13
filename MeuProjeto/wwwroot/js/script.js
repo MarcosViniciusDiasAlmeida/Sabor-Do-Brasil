@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const likeCountSpan = likeBtn.querySelector('.like-count');
       const dislikeCountSpan = dislikeBtn.querySelector('.dislike-count');
 
-      likeBtn.addEventListener("click", function () {
+      likeBtn.addEventListener("click", async function () {
         let likeCount = parseInt(likeCountSpan.textContent) || 0;
         let dislikeCount = parseInt(dislikeCountSpan.textContent) || 0;
 
@@ -133,6 +133,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         likeCountSpan.textContent = likeCount;
         dislikeCountSpan.textContent = dislikeCount;
+
+        // Pegue o usuário logado
+        const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+        if (!usuario || !usuario.id) return; // Garante que existe id
+
+        // Id da publicação (exemplo: like-btn-1 => 1)
+        const idPublicacao = parseInt(this.id.split('-')[2]);
+
+        // Envia para o backend
+        await fetch("/api/curtidas/like", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idUsuario: usuario.id, idPublicacao }),
+        });
+
+        const resp = await fetch(`/api/curtidas/total-likes/${usuario.id}`);
+        if (resp.ok) {
+          const data = await resp.json();
+          document.querySelector('.perfil .likes .col-6 span').textContent = data.total;
+        }
       });
 
       dislikeBtn.addEventListener("click", function () {
