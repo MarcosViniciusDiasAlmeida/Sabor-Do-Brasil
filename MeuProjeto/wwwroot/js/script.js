@@ -251,4 +251,79 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
   }
+
+  document.querySelectorAll('.comentario-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const idPub = this.getAttribute('data-id');
+      const comentariosContainer = document.getElementById('comentarios-container');
+      const publicacoesDiv = document.querySelector('.publicacoes .p-3');
+
+      // Se já está aberto para esse id, fecha e mostra todas as publicações
+      if (comentariosContainer.dataset.open == idPub) {
+        comentariosContainer.classList.add('d-none');
+        comentariosContainer.innerHTML = '';
+        publicacoesDiv.classList.remove('d-none');
+        comentariosContainer.dataset.open = '';
+        return;
+      }
+
+      // Esconde as publicações
+      publicacoesDiv.classList.add('d-none');
+      comentariosContainer.classList.remove('d-none');
+      comentariosContainer.dataset.open = idPub;
+
+      // Busca comentários do backend
+      const resp =  fetch(`/api/comentarios/${idPub}`);
+      const comentarios = resp.ok ? await resp.json() : [];
+
+      // Monta o HTML dos comentários
+      let html = `
+        <div class="card mb-2" style="width: 100%; border: 1.5px solid #C2BEBE;">
+          <div class="card-body">
+            <h6 class="mb-3">Comentários</h6>
+            <div id="lista-comentarios">
+              ${comentarios.map(c => `
+                <div class="mb-2">
+                  <img src="${c.foto_perfil}" alt="perfil" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">
+                  <strong>${c.nome_usuario}</strong>: ${c.descricao}
+                </div>
+              `).join('')}
+            </div>
+            <div class="mt-3">
+              <textarea id="novoComentario" class="form-control mb-2" rows="2" placeholder="Escreva seu comentário..."></textarea>
+              <button id="btnComentar" class="btn btn-warning text-white">Comentar</button>
+              <button id="btnVoltar" class="btn btn-outline-secondary ms-2">Voltar</button>
+            </div>
+          </div>
+        </div>
+      `;
+      comentariosContainer.innerHTML = html;
+
+      // Evento de comentar
+      document.getElementById('btnComentar').onclick = async () => {
+        const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+        const texto = document.getElementById('novoComentario').value.trim();
+        if (!usuario || !texto) return;
+        await fetch('/api/comentarios', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            idUsuario: usuario.id,
+            idPublicacao: idPub,
+            descricao: texto
+          })
+        });
+        // Recarrega comentários
+        btn.click();
+      };
+
+      // Evento de voltar
+      document.getElementById('btnVoltar').onclick = () => {
+        comentariosContainer.classList.add('d-none');
+        comentariosContainer.innerHTML = '';
+        publicacoesDiv.classList.remove('d-none');
+        comentariosContainer.dataset.open = '';
+      };
+    });
+  });
 });

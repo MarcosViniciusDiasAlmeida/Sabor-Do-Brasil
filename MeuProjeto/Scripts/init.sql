@@ -99,25 +99,24 @@ CREATE TABLE IF NOT EXISTS `init`.`curtidas` (
 CREATE TABLE IF NOT EXISTS `init`.`comentarios` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `id_usuarios` INT NOT NULL,
-  `id_publicacaoo` INT NOT NULL,
+  `id_publicacao` INT NOT NULL,
   `foto_perfil` VARCHAR(255) NOT NULL,
   `descricao` LONGTEXT NOT NULL,
   `data_comentario` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `id_usuarios_idx` (`id_usuarios` ASC) VISIBLE,
-  INDEX `id_publicacaoo_idx` (`id_publicacaoo` ASC) VISIBLE,
+  INDEX `id_publicacao_idx` (`id_publicacao` ASC) VISIBLE,
   CONSTRAINT `id_usuarios`
     FOREIGN KEY (`id_usuarios`)
     REFERENCES `init`.`usuario` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `id_publicacaoo`
-    FOREIGN KEY (`id_publicacaoo`)
+  CONSTRAINT `fk_comentarios_publicacao`
+    FOREIGN KEY (`id_publicacao`)
     REFERENCES `init`.`publicacao` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
-
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
