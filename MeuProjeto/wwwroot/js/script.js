@@ -108,6 +108,46 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  const publicacoesContainer = document.querySelector('.publicacoes .p-3');
+  if (!publicacoesContainer) return;
+
+  // Busca as publicações do backend
+  const resp = await fetch('/api/publicacao');
+  if (!resp.ok) return;
+  const publicacoes = await resp.json();
+
+  publicacoesContainer.innerHTML = ""; // Limpa o conteúdo
+
+  publicacoes.forEach(pub => {
+    publicacoesContainer.innerHTML += `
+      <div class="card publicacao-card mb-2" style="width: 320px; min-height: 220px; margin: 0 auto; border: 1.5px solid #C2BEBE;">
+        <img src="${pub.foto}" class="card-img-top" alt="${pub.nome_prato}" style="height: 180px; object-fit: cover;">
+        <div class="card-body p-2">
+          <h6 class="card-title mb-1" style="font-size: 1rem;">${pub.nome_prato}</h6>
+          <div class="d-flex justify-content-between small">
+            <span style="font-size: 0.9rem;">${pub.local}</span>
+            <span style="font-size: 0.9rem;">${pub.cidade_estado}</span>
+          </div>
+          <div class="d-flex justify-content-between mt-2">
+            <div>
+              <button id="like-btn-${pub.id}" class="btn p-0 border-0 bg-transparent like-btn">
+                <i class="bi bi-hand-thumbs-up"></i> <span class="like-count">0</span>
+              </button>
+              <button id="dislike-btn-${pub.id}" class="btn p-0 border-0 bg-transparent dislike-btn ms-2">
+                <i class="bi bi-hand-thumbs-down"></i> <span class="dislike-count">0</span>
+              </button>
+            </div>
+            <span style="font-size: 0.95rem;">
+              <i class="bi bi-chat-dots"></i> 0
+            </span>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  // Aqui você pode chamar sua função para ativar os eventos de like/dislike nos botões criados
+
   for (let i = 1; i <= 3; i++) {
     const likeBtn = document.getElementById(`like-btn-${i}`);
     const dislikeBtn = document.getElementById(`dislike-btn-${i}`);
