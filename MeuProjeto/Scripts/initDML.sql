@@ -8,14 +8,14 @@ INSERT INTO `init`.`usuario` (`nome`, `email`, `senha`, `foto`) VALUES
 -- Inserir empresas
 INSERT INTO `init`.`empresa` (`id`, `nome`) VALUES
 (1, 'Sabor do Brasil'),
-(2, 'Delícias Caseiras');
+(2, 'Delícias Caseiras'),
+(3, 'Dona Graça');
 
 -- Inserir publicações
 INSERT INTO `init`.`publicacao` (`id`, `id_empresa`, `id_usuarioss`, `nome_prato`, `foto`, `local`, `cidade-estado`) VALUES
-(1, 1, 1, 'Feijoada', 'feijoada.jpg', 'Restaurante Central', 'São Paulo-SP'),
-(2, 2, 2, 'Moqueca Baiana', 'moqueca.jpg', 'Praia do Forte', 'Salvador-BA');
-INSERT INTO `init`.`publicacao` (`id`, `id_empresa`, `id_usuarioss`, `nome_prato`, `foto`, `local`, `cidade-estado`) VALUES
-(3, 1, 1, 'Baião de Dois', 'baiao.jpg', 'Restaurante do Sertão', 'Fortaleza-CE');
+(1, 1, 1, 'Feijoada', 'imagens/publicacao/publicacao01.png', 'Restaurante Central', 'São Paulo-SP'),
+(2, 2, 2, 'Moqueca Baiana', 'imagens/publicacao/publicacao02.png', 'Praia do Forte', 'Salvador-BA'),
+(3, 3, 1, 'Baião de Dois', 'imagens/publicacao/publicacao03.png', 'Restaurante do Sertão', 'Fortaleza-CE');
 
 -- Inserir comentário
 INSERT INTO `init`.`comentarios` (`id_usuarios`, `id_publicacaoo`, `foto_perfil`, `descricao`) VALUES
