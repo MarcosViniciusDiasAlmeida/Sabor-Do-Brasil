@@ -19,7 +19,7 @@ public class ComentariosController : ControllerBase
         {
             conn.Open();
             var cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT c.descricao, c.foto_perfil, u.nome AS nome_usuario
+            cmd.CommandText = @"SELECT c.id, c.id_usuarios, c.descricao, c.foto_perfil, u.nome AS nome_usuario
                                 FROM comentarios c
                                 JOIN usuario u ON u.id = c.id_usuarios
                                 WHERE c.id_publicacao = @id
@@ -30,6 +30,8 @@ public class ComentariosController : ControllerBase
                 while (reader.Read())
                 {
                     lista.Add(new {
+                        id = reader["id"],
+                        id_usuario = reader["id_usuarios"],
                         descricao = reader["descricao"],
                         foto_perfil = reader["foto_perfil"],
                         nome_usuario = reader["nome_usuario"]
@@ -57,12 +59,47 @@ public class ComentariosController : ControllerBase
         }
         return Ok();
     }
+
+    [HttpPut("{id}")]
+    public IActionResult Editar(int id, [FromBody] NovoComentario req)
+    {
+        using (var conn = new MySqlConnection(_config.GetConnectionString("DefaultConnection")))
+        {
+            conn.Open();
+            // Só permite editar se o comentário for do usuário
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = "UPDATE comentarios SET descricao = @descricao WHERE id = @id AND id_usuarios = @id_usuario";
+            cmd.Parameters.AddWithValue("@descricao", req.descricao);
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@id_usuario", req.idUsuario);
+            int rows = cmd.ExecuteNonQuery();
+            if (rows == 0) return Forbid();
+        }
+        return Ok();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Excluir(int id, [FromQuery] int idUsuario)
+    {
+        using (var conn = new MySqlConnection(_config.GetConnectionString("DefaultConnection")))
+        {
+            conn.Open();
+            // Só permite excluir se o comentário for do usuário
+            var cmd = conn.CreateCommand();
+            cmd.CommandText = "DELETE FROM comentarios WHERE id = @id AND id_usuarios = @id_usuario";
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@id_usuario", idUsuario);
+            int rows = cmd.ExecuteNonQuery();
+            if (rows == 0) return Forbid();
+        }
+        return Ok();
+    }
 }
 
 public class NovoComentario
 {
     public int idUsuario { get; set; }
     public int idPublicacao { get; set; }
-    public string descricao { get; set; }
-    public string fotoPerfil { get; set; }
+    public string? descricao { get; set; }
+    public string? fotoPerfil { get; set; }
 }
