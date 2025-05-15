@@ -29,7 +29,8 @@ public class ComentariosController : ControllerBase
             {
                 while (reader.Read())
                 {
-                    lista.Add(new {
+                    lista.Add(new
+                    {
                         id = reader["id"],
                         id_usuario = reader["id_usuarios"],
                         descricao = reader["descricao"],

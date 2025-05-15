@@ -295,8 +295,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             let botoes = '';
             if (usuario && c.id_usuario == usuario.id) {
               botoes = `
-                <button class="btn btn-sm btn-link text-primary p-0 me-2 editar-comentario" data-id="${c.id}">Editar</button>
-                <button class="btn btn-sm btn-link text-danger p-0 excluir-comentario" data-id="${c.id}">Excluir</button>
+                <button class="btn btn-sm btn-link text-primary p-0 me-2 editar-comentario" data-id="${c.id}" title="Editar"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-sm btn-link text-danger p-0 excluir-comentario" data-id="${c.id}" title="Excluir"><i class="bi bi-trash3"></i></button>
               `;
             }
             return `
@@ -310,7 +310,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           // Eventos de editar
           lista.querySelectorAll('.editar-comentario').forEach(btn => {
-            btn.onclick = function() {
+            btn.onclick = function () {
               const idComentario = this.dataset.id;
               const div = lista.querySelector(`[data-comentario-id='${idComentario}']`);
               const textoSpan = div.querySelector('.comentario-texto');
@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               salvarBtn.className = 'btn btn-sm btn-success ms-2 salvar-edicao';
               salvarBtn.textContent = 'Salvar';
               div.appendChild(salvarBtn);
-              salvarBtn.onclick = async function() {
+              salvarBtn.onclick = async function () {
                 const novoTexto = div.querySelector('.comentario-editar-textarea').value.trim();
                 if (!novoTexto) return;
                 await fetch(`/api/comentarios/${idComentario}`, {
@@ -336,7 +336,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
           // Eventos de excluir
           lista.querySelectorAll('.excluir-comentario').forEach(btn => {
-            btn.onclick = async function() {
+            btn.onclick = async function () {
               const idComentario = this.dataset.id;
               if (confirm('Tem certeza que deseja excluir este comentário?')) {
                 await fetch(`/api/comentarios/${idComentario}?idUsuario=${usuario.id}`, { method: 'DELETE' });
@@ -382,15 +382,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
         // Limpa o campo
         document.getElementById('novoComentario').value = '';
-        // Recarrega apenas a lista de comentários
-        const respAtualizada = await fetch(`/api/comentarios/${idPub}`);
-        const comentariosAtualizados = respAtualizada.ok ? await respAtualizada.json() : [];
-        document.getElementById('lista-comentarios').innerHTML = comentariosAtualizados.map(c => `
-          <div class="mb-2">
-            <img src="${c.foto_perfil}" alt="perfil" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">
-            <strong>${c.nome_usuario}</strong>: ${c.descricao}
-          </div>
-        `).join('');
+        // Recarrega a lista de comentários (com os botões de editar/excluir)
+        await carregarComentarios(idPub);
       };
 
       // Evento de voltar
