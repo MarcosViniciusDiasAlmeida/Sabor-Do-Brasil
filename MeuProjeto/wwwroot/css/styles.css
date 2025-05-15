@@ -61,11 +61,6 @@
     position: relative;
 }
 #comentarios-container {
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
     width: 320px; /* igual ao card */
     min-height: 220px;
     background: #fff;
@@ -74,7 +69,7 @@
     z-index: 10;
     border-radius: 8px;
     padding: 16px 12px 24px 12px;
-    top: 60px; /* ajuste conforme seu layout */
+    margin: 0 auto 16px auto;
     display: block;
 }
 #comentarios-container.d-none {

@@ -259,18 +259,28 @@ document.addEventListener("DOMContentLoaded", async () => {
       const idPub = this.getAttribute('data-id');
       const comentariosContainer = document.getElementById('comentarios-container');
       const publicacoesDiv = document.querySelector('.publicacoes .p-3');
+      const cards = publicacoesDiv.querySelectorAll('.publicacao-card');
 
-      // Se já está aberto para esse id, fecha e mostra todas as publicações
+      // Se já está aberto para esse id, volta ao normal
       if (comentariosContainer.dataset.open == idPub) {
         comentariosContainer.classList.add('d-none');
         comentariosContainer.innerHTML = '';
-        publicacoesDiv.classList.remove('d-none');
+        cards.forEach(card => card.classList.remove('d-none'));
         comentariosContainer.dataset.open = '';
         return;
       }
 
-      // Esconde as publicações
-      publicacoesDiv.classList.add('d-none');
+      // Esconde todas as publicações, menos a selecionada
+      cards.forEach(card => {
+        if (card.querySelector(`.comentario-btn[data-id="${idPub}"]`)) {
+          card.classList.remove('d-none');
+          // Insere o container de comentários logo após o card selecionado
+          card.after(comentariosContainer);
+        } else {
+          card.classList.add('d-none');
+        }
+      });
+
       comentariosContainer.classList.remove('d-none');
       comentariosContainer.dataset.open = idPub;
 
@@ -313,7 +323,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             idUsuario: usuario.id,
             idPublicacao: idPub,
             descricao: texto,
-            fotoPerfil: usuario.foto // Adicione esta linha!
+            fotoPerfil: usuario.foto
           })
         });
         // Recarrega comentários
@@ -324,7 +334,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById('btnVoltar').onclick = () => {
         comentariosContainer.classList.add('d-none');
         comentariosContainer.innerHTML = '';
-        publicacoesDiv.classList.remove('d-none');
+        cards.forEach(card => card.classList.remove('d-none'));
         comentariosContainer.dataset.open = '';
       };
     });

@@ -16,7 +16,3 @@ INSERT INTO `init`.`publicacao` (`id`, `id_empresa`, `id_usuarioss`, `nome_prato
 (1, 1, 1, 'Feijoada', 'imagens/publicacao/publicacao01.png', 'Restaurante Central', 'São Paulo-SP'),
 (2, 2, 2, 'Moqueca Baiana', 'imagens/publicacao/publicacao02.png', 'Praia do Forte', 'Salvador-BA'),
 (3, 3, 1, 'Baião de Dois', 'imagens/publicacao/publicacao03.png', 'Restaurante do Sertão', 'Fortaleza-CE');
-
--- Inserir comentário
-INSERT INTO `init`.`comentarios` (`id_usuarios`, `id_publicacao`, `foto_perfil`, `descricao`) VALUES
-(1, 2, 'ana.jpg', 'Essa moqueca parece deliciosa!');
