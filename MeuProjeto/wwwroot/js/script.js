@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
             <span style="font-size: 0.95rem;">
               <button class="btn btn-link p-0 m-0 comentario-btn" data-id="${pub.id}" style="color: inherit;">
-                <i class="bi bi-chat-dots"></i> 3
+                <i class="bi bi-chat-dots"></i>
               </button>
             </span>
           </div>
