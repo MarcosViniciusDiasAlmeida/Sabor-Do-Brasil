@@ -56,3 +56,27 @@
 .like-btn:hover i, .dislike-btn:hover i {
     transform: scale(1.2);
 }
+
+.publicacoes {
+    position: relative;
+}
+#comentarios-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 320px; /* igual ao card */
+    min-height: 220px;
+    background: #fff;
+    border: 1.5px solid #C2BEBE;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    z-index: 10;
+    border-radius: 8px;
+    padding: 16px 12px 24px 12px;
+    top: 60px; /* ajuste conforme seu layout */
+    display: block;
+}
+#comentarios-container.d-none {
+    display: none;
+}
