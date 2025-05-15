@@ -285,24 +285,29 @@ document.addEventListener("DOMContentLoaded", async () => {
       comentariosContainer.dataset.open = idPub;
 
       // Busca comentários do backend
-      const resp = await fetch(`/api/comentarios/${idPub}`);
-      const comentarios = resp.ok ? await resp.json() : [];
+      async function carregarComentarios(idPub) {
+        const resp = await fetch(`/api/comentarios/${idPub}`);
+        const comentarios = resp.ok ? await resp.json() : [];
+        const lista = document.getElementById('lista-comentarios');
+        if (lista) {
+          lista.innerHTML = comentarios.map(c => `
+            <div class="mb-2">
+              <img src="${c.foto_perfil}" alt="perfil" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">
+              <strong>${c.nome_usuario}</strong>: ${c.descricao}
+            </div>
+          `).join('');
+        }
+      }
 
       // Monta o HTML dos comentários
       let html = `
         <div class="card mb-2" style="width: 100%; border: 1.5px solid #C2BEBE;">
           <div class="card-body">
             <h6 class="mb-3">Comentários</h6>
-            <div id="lista-comentarios">
-              ${comentarios.map(c => `
-                <div class="mb-2">
-                  <img src="${c.foto_perfil}" alt="perfil" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">
-                  <strong>${c.nome_usuario}</strong>: ${c.descricao}
-                </div>
-              `).join('')}
-            </div>
+            <div id="lista-comentarios"></div>
             <div class="mt-3">
               <textarea id="novoComentario" class="form-control mb-2" rows="2" placeholder="Escreva seu comentário..."></textarea>
+              <div id="comentarioErro" class="text-danger small mb-2 d-none"></div>
               <button id="btnComentar" class="btn btn-warning text-white">Comentar</button>
               <button id="btnVoltar" class="btn btn-outline-secondary ms-2">Voltar</button>
             </div>
@@ -310,6 +315,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
       comentariosContainer.innerHTML = html;
+      await carregarComentarios(idPub);
 
       // Evento de comentar
       document.getElementById('btnComentar').onclick = async () => {
@@ -326,8 +332,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             fotoPerfil: usuario.foto
           })
         });
-        // Recarrega comentários
-        btn.click();
+        // Limpa o campo
+        document.getElementById('novoComentario').value = '';
+        // Recarrega apenas a lista de comentários
+        const respAtualizada = await fetch(`/api/comentarios/${idPub}`);
+        const comentariosAtualizados = respAtualizada.ok ? await respAtualizada.json() : [];
+        document.getElementById('lista-comentarios').innerHTML = comentariosAtualizados.map(c => `
+          <div class="mb-2">
+            <img src="${c.foto_perfil}" alt="perfil" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">
+            <strong>${c.nome_usuario}</strong>: ${c.descricao}
+          </div>
+        `).join('');
       };
 
       // Evento de voltar
