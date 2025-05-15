@@ -19,64 +19,67 @@
 .perfil {
     padding: 8px 0;
 }
-.borda
-{
+
+.borda {
     width: max-content;
 }
 
 .btn-outline-warning {
-  border-color: #D97014;
-  color: #D97014;
+    border-color: #D97014;
+    color: #D97014;
 }
 
 .btn-outline-warning:hover {
-  background-color: #D97014;
-  color: #fff;
+    background-color: #D97014;
+    color: #fff;
 }
 
 .btn-warning {
-  background-color: #D97014;
-  color: #FFFFFF;
-  border: none;
+    background-color: #D97014;
+    color: #FFFFFF;
+    border: none;
 }
 
 .btn-warning:hover {
-  background-color: #b85e10;
+    background-color: #b85e10;
 }
 
-.like-btn i, .dislike-btn i {
+.like-btn i,
+.dislike-btn i {
     transition: color 0.2s, transform 0.2s;
 }
+
 .like-btn.liked i {
     color: #FF0000;
 }
+
 .dislike-btn.liked i {
     color: #FF0000;
 }
-.like-btn:hover i, .dislike-btn:hover i {
+
+.like-btn:hover i,
+.dislike-btn:hover i {
     transform: scale(1.2);
 }
 
 .publicacoes {
     position: relative;
 }
+
 #comentarios-container {
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    width: 320px; /* igual ao card */
+    width: 320px;
+    /* igual ao card */
     min-height: 220px;
     background: #fff;
     border: 1.5px solid #C2BEBE;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
     z-index: 10;
     border-radius: 8px;
     padding: 16px 12px 24px 12px;
-    top: 60px; /* ajuste conforme seu layout */
+    margin: 0 auto 16px auto;
     display: block;
 }
+
 #comentarios-container.d-none {
     display: none;
 }
