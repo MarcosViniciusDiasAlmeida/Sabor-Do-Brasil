@@ -62,15 +62,19 @@
 }
 #comentarios-container {
     position: absolute;
-    top: 0;
     left: 0;
-    width: 100%;
-    min-height: 100%;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 320px; /* igual ao card */
+    min-height: 220px;
     background: #fff;
+    border: 1.5px solid #C2BEBE;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
     z-index: 10;
     border-radius: 8px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-    padding: 24px 16px 32px 16px;
+    padding: 16px 12px 24px 12px;
+    top: 60px; /* ajuste conforme seu layout */
     display: block;
 }
 #comentarios-container.d-none {

@@ -138,7 +138,9 @@ document.addEventListener("DOMContentLoaded", async () => {
               </button>
             </div>
             <span style="font-size: 0.95rem;">
-              <i class="bi bi-chat-dots"></i> 0
+              <button class="btn btn-link p-0 m-0 comentario-btn" data-id="${pub.id}" style="color: inherit;">
+                <i class="bi bi-chat-dots"></i> 3
+              </button>
             </span>
           </div>
         </div>
@@ -253,7 +255,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   document.querySelectorAll('.comentario-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', async function () {
       const idPub = this.getAttribute('data-id');
       const comentariosContainer = document.getElementById('comentarios-container');
       const publicacoesDiv = document.querySelector('.publicacoes .p-3');
@@ -273,7 +275,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       comentariosContainer.dataset.open = idPub;
 
       // Busca comentários do backend
-      const resp =  fetch(`/api/comentarios/${idPub}`);
+      const resp = await fetch(`/api/comentarios/${idPub}`);
       const comentarios = resp.ok ? await resp.json() : [];
 
       // Monta o HTML dos comentários
@@ -310,7 +312,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           body: JSON.stringify({
             idUsuario: usuario.id,
             idPublicacao: idPub,
-            descricao: texto
+            descricao: texto,
+            fotoPerfil: usuario.foto // Adicione esta linha!
           })
         });
         // Recarrega comentários
