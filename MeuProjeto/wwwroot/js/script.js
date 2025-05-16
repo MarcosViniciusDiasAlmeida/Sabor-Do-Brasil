@@ -11,6 +11,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById('userPhoto').src = user.foto;
     loginButton.classList.add("d-none");
     logoutButton.classList.remove("d-none");
+    // Mostra contadores de likes/dislikes do perfil
+    document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = '0';
+    document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = '0';
   }
 
   // Função para esconder dados do usuário logado
@@ -19,6 +22,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById('userPhoto').src = "imagens/logo/logo_sabor_do_brasil.png";
     loginButton.classList.remove("d-none");
     logoutButton.classList.add("d-none");
+    // Zera contadores de likes/dislikes do perfil
+    document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = '0';
+    document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = '0';
+    // Remove destaque visual dos likes/dislikes dos cards
+    document.querySelectorAll('.like-btn').forEach(btn => btn.classList.remove('liked'));
+    document.querySelectorAll('.dislike-btn').forEach(btn => btn.classList.remove('liked'));
+    // NÃO zere a contagem dos likes/dislikes dos cards!
   }
 
   // Verifica se já existe usuário logado no localStorage
@@ -58,9 +68,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         var modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
         modal.hide();
         loginError.classList.add('d-none');
-        // Remova as linhas abaixo se existirem:
-        // loginForm.email.classList.remove("is-invalid");
-        // loginForm.password.classList.remove("is-invalid");
+        // Atualiza visual dos likes/dislikes dos cards para o usuário logado
+        atualizarLikesDislikesPerfil(user.id);
+        document.querySelectorAll('.like-btn').forEach(async btn => {
+          const id = btn.id.replace('like-btn-', '');
+          const likeCountSpan = btn.querySelector('.like-count');
+          const dislikeBtn = document.getElementById(`dislike-btn-${id}`);
+          const dislikeCountSpan = dislikeBtn?.querySelector('.dislike-count');
+          if (likeCountSpan && dislikeBtn && dislikeCountSpan) {
+            await atualizarEstadoCurtidas(Number(id), btn, dislikeBtn, likeCountSpan, dislikeCountSpan, user.id);
+          }
+        });
       } else {
         loginError.textContent = "Usuário ou senha incorreto";
         loginError.classList.remove('d-none');
@@ -94,6 +112,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         var modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
         modal.hide();
         loginError.classList.add('d-none');
+        // Atualiza visual dos likes/dislikes dos cards para o usuário logado
+        atualizarLikesDislikesPerfil(user.id);
+        document.querySelectorAll('.like-btn').forEach(async btn => {
+          const id = btn.id.replace('like-btn-', '');
+          const likeCountSpan = btn.querySelector('.like-count');
+          const dislikeBtn = document.getElementById(`dislike-btn-${id}`);
+          const dislikeCountSpan = dislikeBtn?.querySelector('.dislike-count');
+          if (likeCountSpan && dislikeBtn && dislikeCountSpan) {
+            await atualizarEstadoCurtidas(Number(id), btn, dislikeBtn, likeCountSpan, dislikeCountSpan, user.id);
+          }
+        });
       } else {
         loginError.textContent = "Usuário ou senha incorreto";
         loginError.classList.remove('d-none');
@@ -105,6 +134,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     logoutButton.addEventListener("click", () => {
       localStorage.removeItem("usuarioLogado");
       esconderUsuario();
+      // Atualiza visual do perfil imediatamente ao deslogar
+      document.getElementById('userName').textContent = "Sabor do Brasil";
+      document.getElementById('userPhoto').src = "imagens/logo/logo_sabor_do_brasil.png";
+      // Esconde botão de logout e mostra de login
+      loginButton.classList.remove("d-none");
+      logoutButton.classList.add("d-none");
+      // Zera contadores de likes/dislikes do perfil
+      document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = '0';
+      document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = '0';
     });
   }
 
@@ -149,13 +187,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     `;
   });
 
-  // Após renderizar os cards, buscar a contagem de comentários para cada publicação
+  // Após renderizar os cards, buscar a contagem de likes/dislikes para cada publicação
   publicacoes.forEach(pub => {
-    fetch(`/api/comentarios/${pub.id}`)
-      .then(resp => resp.ok ? resp.json() : [])
-      .then(comentarios => {
-        const countSpan = document.getElementById(`comentario-count-${pub.id}`);
-        if (countSpan) countSpan.textContent = comentarios.length;
+    fetch(`/api/curtidas/contagem/${pub.id}`)
+      .then(resp => resp.ok ? resp.json() : {likes: 0, dislikes: 0})
+      .then(data => {
+        const likeBtn = document.getElementById(`like-btn-${pub.id}`);
+        const dislikeBtn = document.getElementById(`dislike-btn-${pub.id}`);
+        if (likeBtn) likeBtn.querySelector('.like-count').textContent = data.likes;
+        if (dislikeBtn) dislikeBtn.querySelector('.dislike-count').textContent = data.dislikes;
       });
   });
 
