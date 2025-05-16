@@ -28,7 +28,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Remove destaque visual dos likes/dislikes dos cards
     document.querySelectorAll('.like-btn').forEach(btn => btn.classList.remove('liked'));
     document.querySelectorAll('.dislike-btn').forEach(btn => btn.classList.remove('liked'));
-    // NÃO zere a contagem dos likes/dislikes dos cards!
+    // Remove botões de ação dos comentários se estiverem visíveis
+    document.querySelectorAll('.editar-comentario, .excluir-comentario, .salvar-edicao').forEach(btn => btn.remove());
+    // Fecha overlay de comentários e volta para a página principal
+    const comentariosContainer = document.getElementById('comentarios-container');
+    if (comentariosContainer) {
+      comentariosContainer.classList.add('d-none');
+      comentariosContainer.innerHTML = '';
+      const publicacoesDiv = document.querySelector('.publicacoes .p-3');
+      if (publicacoesDiv) {
+        publicacoesDiv.querySelectorAll('.publicacao-card').forEach(card => card.classList.remove('d-none'));
+      }
+    }
   }
 
   // Verifica se já existe usuário logado no localStorage
@@ -366,6 +377,12 @@ document.addEventListener("DOMContentLoaded", async () => {
           // Eventos de editar
           lista.querySelectorAll('.editar-comentario').forEach(btn => {
             btn.onclick = function () {
+              // Bloqueia edição se não estiver logado
+              const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+              if (!usuario || !usuario.id) {
+                alert('Você precisa estar logado para editar comentários.');
+                return;
+              }
               const idComentario = this.dataset.id;
               const div = lista.querySelector(`[data-comentario-id='${idComentario}']`);
               const textoSpan = div.querySelector('.comentario-texto');
@@ -392,6 +409,12 @@ document.addEventListener("DOMContentLoaded", async () => {
           // Eventos de excluir
           lista.querySelectorAll('.excluir-comentario').forEach(btn => {
             btn.onclick = async function () {
+              // Bloqueia exclusão se não estiver logado
+              const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+              if (!usuario || !usuario.id) {
+                alert('Você precisa estar logado para excluir comentários.');
+                return;
+              }
               const idComentario = this.dataset.id;
               if (confirm('Tem certeza que deseja excluir este comentário?')) {
                 await fetch(`/api/comentarios/${idComentario}?idUsuario=${usuario.id}`, { method: 'DELETE' });
