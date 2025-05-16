@@ -140,12 +140,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             <span style="font-size: 0.95rem;">
               <button class="btn btn-link p-0 m-0 comentario-btn" data-id="${pub.id}" style="color: inherit;">
                 <i class="bi bi-chat-dots"></i>
+                <span class="comentario-count" id="comentario-count-${pub.id}" style="font-size:0.95rem; margin-left:4px;">0</span>
               </button>
             </span>
           </div>
         </div>
       </div>
     `;
+  });
+
+  // Após renderizar os cards, buscar a contagem de comentários para cada publicação
+  publicacoes.forEach(pub => {
+    fetch(`/api/comentarios/${pub.id}`)
+      .then(resp => resp.ok ? resp.json() : [])
+      .then(comentarios => {
+        const countSpan = document.getElementById(`comentario-count-${pub.id}`);
+        if (countSpan) countSpan.textContent = comentarios.length;
+      });
   });
 
   // Aqui você pode chamar sua função para ativar os eventos de like/dislike nos botões criados
@@ -307,6 +318,10 @@ document.addEventListener("DOMContentLoaded", async () => {
               </div>
             `;
           }).join('');
+
+          // Atualiza a contagem dinâmica de comentários no card
+          const countSpan = document.getElementById(`comentario-count-${idPub}`);
+          if (countSpan) countSpan.textContent = comentarios.length;
 
           // Eventos de editar
           lista.querySelectorAll('.editar-comentario').forEach(btn => {
