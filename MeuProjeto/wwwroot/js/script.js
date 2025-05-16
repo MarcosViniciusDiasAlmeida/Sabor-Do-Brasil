@@ -186,8 +186,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <i class="bi bi-hand-thumbs-down"></i> <span class="dislike-count">0</span>
               </button>
             </div>
-            <span style="font-size: 0.95rem;">
-              <button class="btn btn-link p-0 m-0 comentario-btn" data-id="${pub.id}" style="color: inherit;">
+            <span style="font-size: 0.95rem; display: flex; align-items: center;">
+              <button class="btn btn-link p-0 m-0 comentario-btn" data-id="${pub.id}" style="color: inherit; text-decoration: none;">
                 <i class="bi bi-chat-dots"></i>
                 <span class="comentario-count" id="comentario-count-${pub.id}" style="font-size:0.95rem; margin-left:4px;">0</span>
               </button>
@@ -207,6 +207,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         const dislikeBtn = document.getElementById(`dislike-btn-${pub.id}`);
         if (likeBtn) likeBtn.querySelector('.like-count').textContent = data.likes;
         if (dislikeBtn) dislikeBtn.querySelector('.dislike-count').textContent = data.dislikes;
+      });
+    // Atualiza a contagem de comentários em tempo real
+    fetch(`/api/comentarios/${pub.id}`)
+      .then(resp => resp.ok ? resp.json() : [])
+      .then(comentarios => {
+        const countSpan = document.getElementById(`comentario-count-${pub.id}`);
+        if (countSpan) countSpan.textContent = comentarios.length;
       });
   });
 
