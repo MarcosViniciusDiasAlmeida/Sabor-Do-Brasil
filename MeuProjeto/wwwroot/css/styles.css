@@ -83,3 +83,7 @@
 #comentarios-container.d-none {
     display: none;
 }
+
+.comentario-btn {
+    text-decoration: none !important;
+}
