@@ -80,6 +80,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     mostrarUsuario(JSON.parse(usuarioSalvo));
   } else {
     esconderUsuario();
+    // Buscar nome da empresa no banco e exibir no perfil SÓ quando não há usuário logado
+    const respEmpresa = await fetch('/api/empresa/1');
+    if (respEmpresa.ok) {
+      const empresa = await respEmpresa.json();
+      document.getElementById('userName').textContent = empresa.nome;
+      if (empresa.foto) {
+        document.getElementById('userPhoto').src = empresa.foto;
+      }
+      // Exibe likes/deslikes da empresa no perfil
+      document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = empresa.curtidas || 0;
+      document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = empresa.deslikes || 0;
+    } else {
+      document.getElementById('userName').textContent = 'Sabor do Brasil';
+      document.getElementById('userPhoto').src = 'imagens/logo/logo_sabor_do_brasil.png';
+      document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = '0';
+      document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = '0';
+    }
   }
 
   if (loginButton) {
@@ -516,14 +533,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  // Buscar nome da empresa no banco e exibir no perfil
-  const respEmpresa = await fetch('/api/empresa/1');
-  if (respEmpresa.ok) {
-    const empresa = await respEmpresa.json();
-    document.getElementById('userName').textContent = empresa.nome;
-  } else {
-    document.getElementById('userName').textContent = 'Sabor do Brasil';
-  }
+  // Remover este bloco duplicado para não sobrescrever o perfil do usuário logado
+  // const respEmpresa = await fetch('/api/empresa/1');
+  // if (respEmpresa.ok) {
+  //   const empresa = await respEmpresa.json();
+  //   document.getElementById('userName').textContent = empresa.nome;
+  //   if (empresa.foto) {
+  //     document.getElementById('userPhoto').src = empresa.foto;
+  //   }
+  //   // Exibe likes/deslikes da empresa no perfil
+  //   document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = empresa.curtidas || 0;
+  //   document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = empresa.deslikes || 0;
+  // } else {
+  //   document.getElementById('userName').textContent = 'Sabor do Brasil';
+  //   document.getElementById('userPhoto').src = 'imagens/logo/logo_sabor_do_brasil.png';
+  //   document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = '0';
+  //   document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = '0';
+  // }
 
   // Função para abrir o modal de login
   function abrirModalLogin() {

@@ -121,3 +121,15 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- VIEW para likes/deslikes da empresa
+CREATE OR REPLACE VIEW empresa_com_interacoes AS
+SELECT 
+  e.id,
+  e.nome,
+  COALESCE(SUM(CASE WHEN c.curtidas = 'Like' THEN 1 ELSE 0 END), 0) AS curtidas,
+  COALESCE(SUM(CASE WHEN c.curtidas = 'Deslike' THEN 1 ELSE 0 END), 0) AS deslikes
+FROM empresa e
+LEFT JOIN publicacao p ON e.id = p.id_empresa
+LEFT JOIN curtidas c ON p.id = c.id_publicacao
+GROUP BY e.id, e.nome;
