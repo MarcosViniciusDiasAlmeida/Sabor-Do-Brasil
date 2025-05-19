@@ -5,6 +5,38 @@ document.addEventListener("DOMContentLoaded", async () => {
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
 
+  // Remove qualquer is-invalid ao abrir o modal de login
+  const loginModal = document.getElementById('loginModal');
+  if (loginModal) {
+    loginModal.addEventListener('show.bs.modal', function () {
+      loginForm.email.classList.remove("is-invalid");
+      loginForm.password.classList.remove("is-invalid");
+      loginError.classList.add('d-none');
+    });
+  }
+
+  // Listeners para só mostrar vermelho se já tentou submit
+  loginForm.email.addEventListener('input', function () {
+    if (this.value.trim()) {
+      this.classList.remove('is-invalid');
+    }
+  });
+  loginForm.password.addEventListener('input', function () {
+    if (this.value.trim()) {
+      this.classList.remove('is-invalid');
+    }
+  });
+  loginForm.email.addEventListener('blur', function () {
+    if (!this.value.trim()) {
+      this.classList.add('is-invalid');
+    }
+  });
+  loginForm.password.addEventListener('blur', function () {
+    if (!this.value.trim()) {
+      this.classList.add('is-invalid');
+    }
+  });
+
   // Função para mostrar dados do usuário logado
   function mostrarUsuario(user) {
     document.getElementById('userName').textContent = user.nome;
@@ -51,62 +83,50 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (loginButton) {
-    // Validar credenciais ao clicar no botão "Entrar" no modal
-    loginButton.addEventListener("click", async () => {
-      const email = loginForm.email.value.trim();
-      const password = loginForm.password.value.trim();
-
-      // Se não preencheu, não faz nada (nem mostra erro, nem borda)
-      if (!email || !password) {
-        loginError.classList.add('d-none');
-        // Remova as linhas abaixo se existirem:
-        // loginForm.email.classList.add("is-invalid");
-        // loginForm.password.classList.add("is-invalid");
-        return;
-      }
-
-      // Chamada real à API de login
-      const response = await fetch("/api/account/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        const user = await response.json();
-        localStorage.setItem("usuarioLogado", JSON.stringify(user));
-        mostrarUsuario(user);
-        var modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
-        modal.hide();
-        loginError.classList.add('d-none');
-        // Atualiza visual dos likes/dislikes dos cards para o usuário logado
-        atualizarLikesDislikesPerfil(user.id);
-        document.querySelectorAll('.like-btn').forEach(async btn => {
-          const id = btn.id.replace('like-btn-', '');
-          const likeCountSpan = btn.querySelector('.like-count');
-          const dislikeBtn = document.getElementById(`dislike-btn-${id}`);
-          const dislikeCountSpan = dislikeBtn?.querySelector('.dislike-count');
-          if (likeCountSpan && dislikeBtn && dislikeCountSpan) {
-            await atualizarEstadoCurtidas(Number(id), btn, dislikeBtn, likeCountSpan, dislikeCountSpan, user.id);
-          }
-        });
-      } else {
-        loginError.textContent = "Usuário ou senha incorreto";
-        loginError.classList.remove('d-none');
-        // Remova as linhas abaixo se existirem:
-        // loginForm.email.classList.add("is-invalid");
-        // loginForm.password.classList.add("is-invalid");
-      }
+    // Botão fora do modal: só abre o modal e limpa erros
+    loginButton.addEventListener("click", () => {
+      // Limpa campos e erros ao abrir o modal
+      loginForm.email.value = '';
+      loginForm.password.value = '';
+      loginForm.email.classList.remove("is-invalid");
+      loginForm.password.classList.remove("is-invalid");
+      loginError.classList.add('d-none');
+      var modal = new bootstrap.Modal(document.getElementById('loginModal'));
+      modal.show();
     });
   }
 
+  // Controle para só mostrar vermelho após submit ou blur
+  let tentouLogin = false;
+  loginForm.email.addEventListener('blur', () => {
+    if (tentouLogin && !loginForm.email.value.trim()) {
+      loginForm.email.classList.add('is-invalid');
+    }
+  });
+  loginForm.password.addEventListener('blur', () => {
+    if (tentouLogin && !loginForm.password.value.trim()) {
+      loginForm.password.classList.add('is-invalid');
+    }
+  });
+
   if (loginSubmit) {
     loginSubmit.addEventListener("click", async () => {
+      tentouLogin = true;
       const email = loginForm.email.value.trim();
       const password = loginForm.password.value.trim();
 
+      // Limpa o estado de erro antes de validar
+      loginForm.email.classList.remove("is-invalid");
+      loginForm.password.classList.remove("is-invalid");
+
       if (!email || !password) {
         loginError.classList.add('d-none');
+        if (!email) {
+          loginForm.email.classList.add("is-invalid");
+        }
+        if (!password) {
+          loginForm.password.classList.add("is-invalid");
+        }
         return;
       }
 
@@ -123,6 +143,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         var modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
         modal.hide();
         loginError.classList.add('d-none');
+        loginForm.email.classList.remove("is-invalid");
+        loginForm.password.classList.remove("is-invalid");
+        tentouLogin = false;
         // Atualiza visual dos likes/dislikes dos cards para o usuário logado
         atualizarLikesDislikesPerfil(user.id);
         document.querySelectorAll('.like-btn').forEach(async btn => {
@@ -137,6 +160,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else {
         loginError.textContent = "Usuário ou senha incorreto";
         loginError.classList.remove('d-none');
+        loginForm.email.classList.add("is-invalid");
+        loginForm.password.classList.add("is-invalid");
       }
     });
   }
