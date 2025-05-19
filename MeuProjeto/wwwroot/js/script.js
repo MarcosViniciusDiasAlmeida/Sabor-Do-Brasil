@@ -229,7 +229,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       likeBtn.addEventListener("click", async function () {
         const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-        if (!usuario || !usuario.id) return;
+        if (!usuario || !usuario.id) {
+          abrirModalLogin();
+          return;
+        }
         const idPublicacao = i;
 
         await fetch("/api/curtidas/like", {
@@ -244,7 +247,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       dislikeBtn.addEventListener("click", async function () {
         const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-        if (!usuario || !usuario.id) return;
+        if (!usuario || !usuario.id) {
+          abrirModalLogin();
+          return;
+        }
         const idPublicacao = i;
 
         await fetch("/api/curtidas/deslike", {
@@ -454,7 +460,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById('btnComentar').onclick = async () => {
         const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
         const texto = document.getElementById('novoComentario').value.trim();
-        if (!usuario || !texto) return;
+        if (!usuario || !usuario.id) {
+          abrirModalLogin();
+          return;
+        }
+        if (!texto) return;
         await fetch('/api/comentarios', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -488,5 +498,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById('userName').textContent = empresa.nome;
   } else {
     document.getElementById('userName').textContent = 'Sabor do Brasil';
+  }
+
+  // Função para abrir o modal de login
+  function abrirModalLogin() {
+    var modal = new bootstrap.Modal(document.getElementById('loginModal'));
+    modal.show();
   }
 });
