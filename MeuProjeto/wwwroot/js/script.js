@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Após renderizar os cards, buscar a contagem de likes/dislikes para cada publicação
   publicacoes.forEach(pub => {
     fetch(`/api/curtidas/contagem/${pub.id}`)
-      .then(resp => resp.ok ? resp.json() : {likes: 0, dislikes: 0})
+      .then(resp => resp.ok ? resp.json() : { likes: 0, dislikes: 0 })
       .then(data => {
         const likeBtn = document.getElementById(`like-btn-${pub.id}`);
         const dislikeBtn = document.getElementById(`dislike-btn-${pub.id}`);
@@ -480,4 +480,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       };
     });
   });
+
+  // Buscar nome da empresa no banco e exibir no perfil
+  const respEmpresa = await fetch('/api/empresa/1');
+  if (respEmpresa.ok) {
+    const empresa = await respEmpresa.json();
+    document.getElementById('userName').textContent = empresa.nome;
+  } else {
+    document.getElementById('userName').textContent = 'Sabor do Brasil';
+  }
 });
