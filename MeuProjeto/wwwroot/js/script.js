@@ -80,23 +80,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     mostrarUsuario(JSON.parse(usuarioSalvo));
   } else {
     esconderUsuario();
-    // Buscar nome da empresa no banco e exibir no perfil SÓ quando não há usuário logado
-    const respEmpresa = await fetch('/api/empresa/1');
-    if (respEmpresa.ok) {
-      const empresa = await respEmpresa.json();
-      document.getElementById('userName').textContent = empresa.nome;
-      if (empresa.foto) {
-        document.getElementById('userPhoto').src = empresa.foto;
+    await atualizarLikesEmpresa();
+    setInterval(async () => {
+      // Só atualiza se continuar sem usuário logado
+      if (!localStorage.getItem("usuarioLogado")) {
+        await atualizarLikesEmpresa();
       }
-      // Exibe likes/deslikes da empresa no perfil
-      document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = empresa.curtidas || 0;
-      document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = empresa.deslikes || 0;
-    } else {
-      document.getElementById('userName').textContent = 'Sabor do Brasil';
-      document.getElementById('userPhoto').src = 'imagens/logo/logo_sabor_do_brasil.png';
-      document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = '0';
-      document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = '0';
-    }
+    }, 5000);
   }
 
   if (loginButton) {
@@ -157,6 +147,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const user = await response.json();
         localStorage.setItem("usuarioLogado", JSON.stringify(user));
         mostrarUsuario(user);
+        // Remover o foco do botão antes de fechar o modal
+        document.activeElement.blur();
         var modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
         modal.hide();
         loginError.classList.add('d-none');
@@ -555,5 +547,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   function abrirModalLogin() {
     var modal = new bootstrap.Modal(document.getElementById('loginModal'));
     modal.show();
+  }
+
+  // Função para atualizar likes/dislikes da empresa dinamicamente
+  async function atualizarLikesEmpresa() {
+    // Só atualiza se não houver usuário logado
+    if (localStorage.getItem("usuarioLogado")) return;
+    const respEmpresa = await fetch('/api/empresa/1');
+    if (respEmpresa.ok) {
+      const empresa = await respEmpresa.json();
+      document.getElementById('userName').textContent = empresa.nome;
+      document.getElementById('userPhoto').src = empresa.foto || 'imagens/logo/logo_sabor_do_brasil.png';
+      document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = empresa.curtidas || 0;
+      document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = empresa.deslikes || 0;
+    }
   }
 });
