@@ -98,7 +98,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       loginForm.email.classList.remove("is-invalid");
       loginForm.password.classList.remove("is-invalid");
       loginError.classList.add('d-none');
-      var modal = new bootstrap.Modal(document.getElementById('loginModal'));
+      const loginModalEl = document.getElementById('loginModal');
+      let modal = bootstrap.Modal.getInstance(loginModalEl);
+      if (!modal) {
+        modal = new bootstrap.Modal(loginModalEl);
+      }
       modal.show();
     });
   }
@@ -176,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (logoutButton) {
-    logoutButton.addEventListener("click", () => {
+    logoutButton.addEventListener("click", async () => {
       localStorage.removeItem("usuarioLogado");
       esconderUsuario();
       // Atualiza visual do perfil imediatamente ao deslogar
@@ -188,6 +192,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Zera contadores de likes/dislikes do perfil
       document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = '0';
       document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = '0';
+      // Atualiza likes/dislikes da empresa imediatamente
+      await atualizarLikesEmpresa();
     });
   }
 
