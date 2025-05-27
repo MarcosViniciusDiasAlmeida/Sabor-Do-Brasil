@@ -1,0 +1,89 @@
+.perfil img {
+    width: 60px !important;
+    height: auto;
+    margin-bottom: 8px;
+}
+
+.perfil .nome-site h5,
+.perfil .quantidade h5,
+.perfil .quntidade h5 {
+    font-size: 0.9rem;
+    margin: 2px 0;
+}
+
+.perfil .row.likes {
+    margin-top: 4px;
+    margin-bottom: 0;
+}
+
+.perfil {
+    padding: 8px 0;
+}
+
+.borda {
+    width: max-content;
+}
+
+.btn-outline-warning {
+    border-color: #D97014;
+    color: #D97014;
+}
+
+.btn-outline-warning:hover {
+    background-color: #D97014;
+    color: #fff;
+}
+
+.btn-warning {
+    background-color: #D97014;
+    color: #FFFFFF;
+    border: none;
+}
+
+.btn-warning:hover {
+    background-color: #b85e10;
+}
+
+.like-btn i,
+.dislike-btn i {
+    transition: color 0.2s, transform 0.2s;
+}
+
+.like-btn.liked i {
+    color: #FF0000;
+}
+
+.dislike-btn.liked i {
+    color: #FF0000;
+}
+
+.like-btn:hover i,
+.dislike-btn:hover i {
+    transform: scale(1.2);
+}
+
+.publicacoes {
+    position: relative;
+}
+
+#comentarios-container {
+    width: 320px;
+    /* igual ao card */
+    min-height: 220px;
+    background: #fff;
+    border: 1.5px solid #C2BEBE;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    z-index: 10;
+    border-radius: 8px;
+    padding: 16px 12px 24px 12px;
+    margin: 0 auto 16px auto;
+    display: block;
+}
+
+#comentarios-container.d-none {
+    display: none;
+}
+
+.comentario-btn {
+    text-decoration: none !important;
+}
