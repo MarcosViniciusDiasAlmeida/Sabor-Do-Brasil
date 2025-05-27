@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (logoutButton) {
-    logoutButton.addEventListener("click", () => {
+    logoutButton.addEventListener("click", async () => {
       localStorage.removeItem("usuarioLogado");
       esconderUsuario();
       // Atualiza visual do perfil imediatamente ao deslogar
@@ -192,6 +192,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Zera contadores de likes/dislikes do perfil
       document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = '0';
       document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = '0';
+      // Atualiza likes/dislikes da empresa imediatamente
+      await atualizarLikesEmpresa();
     });
   }
 
