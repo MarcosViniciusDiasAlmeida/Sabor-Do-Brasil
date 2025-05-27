@@ -98,7 +98,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       loginForm.email.classList.remove("is-invalid");
       loginForm.password.classList.remove("is-invalid");
       loginError.classList.add('d-none');
-      var modal = new bootstrap.Modal(document.getElementById('loginModal'));
+      const loginModalEl = document.getElementById('loginModal');
+      let modal = bootstrap.Modal.getInstance(loginModalEl);
+      if (!modal) {
+        modal = new bootstrap.Modal(loginModalEl);
+      }
       modal.show();
     });
   }
