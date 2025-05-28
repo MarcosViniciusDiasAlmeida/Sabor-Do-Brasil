@@ -1,6 +1,8 @@
 .perfil img {
-    width: 60px !important;
-    height: auto;
+    width: 140px !important;
+    height: 140px !important;
+    object-fit: contain;
+    background: #fff;
     margin-bottom: 8px;
 }
 
