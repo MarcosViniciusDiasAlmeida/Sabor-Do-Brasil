@@ -9,6 +9,7 @@ Sabor do Brasil é uma atividade desenvolvida como parte de uma avaliação do S
   **Usuário de teste:**  
   - **E-mail:** ana@example.com  
   - **Senha:** senha123
+  
   Ou 
   - **E-mail:** luiza@example.com
   - **Senha:** 123456
