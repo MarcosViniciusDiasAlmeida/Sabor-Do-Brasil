@@ -47,21 +47,21 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `init`.`publicacao` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `id_empresa` INT NOT NULL,
-  `id_usuarioss` INT NOT NULL,
+  `id_usuario` INT NOT NULL,
   `nome_prato` VARCHAR(50) NOT NULL,
   `foto` VARCHAR(100) NOT NULL,
   `local` VARCHAR(100) NOT NULL,
   `cidade-estado` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `id_empresa_idx` (`id_empresa` ASC) VISIBLE,
-  INDEX `id_usuarioss_idx` (`id_usuarioss` ASC) VISIBLE,
+  INDEX `id_usuario_idx` (`id_usuario` ASC) VISIBLE,
   CONSTRAINT `id_empresa`
     FOREIGN KEY (`id_empresa`)
     REFERENCES `init`.`empresa` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `id_usuarioss`
-    FOREIGN KEY (`id_usuarioss`)
+  CONSTRAINT `id_usuario`
+    FOREIGN KEY (`id_usuario`)
     REFERENCES `init`.`usuario` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)

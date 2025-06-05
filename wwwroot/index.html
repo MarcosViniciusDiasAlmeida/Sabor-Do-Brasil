@@ -34,7 +34,13 @@
 
             <!-- Publicações (Amarelo) -->
             <div class="col-md-6 publicacoes position-relative">
-                <h5 class="text-center mb-3">Publicações</h5>
+                <div class="d-flex justify-content-center align-items-center mb-3">
+                    <h5 class="text-center mb-0 me-2">Publicações</h5>
+                    <button id="novaPublicacaoBtn" class="btn btn-sm btn-success rounded-circle d-flex align-items-center justify-content-center"
+                        style="width:32px;height:32px;" title="Nova publicação">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                </div>
                 <!-- Borda total envolvendo todos os cards -->
                 <div class="p-3">
                     <!-- Card 1 -->
@@ -217,9 +223,8 @@
         </div>
     </div>
 
-    <!-- Modal de Nova Publicação -->
-    <div class="modal fade" id="novaPublicacaoModal" tabindex="-1" aria-labelledby="novaPublicacaoModalLabel"
-        aria-hidden="true">
+    <!-- Modal Nova Publicação -->
+    <div class="modal fade" id="novaPublicacaoModal" tabindex="-1" aria-labelledby="novaPublicacaoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -227,29 +232,27 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="novaPublicacaoForm">
-                        <div class="mb-3">
-                            <label for="nomePrato" class="form-label">Nome do Prato</label>
-                            <input type="text" class="form-control" id="nomePrato" name="nome_prato" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="fotoPrato" class="form-label">Foto (URL)</label>
-                            <input type="text" class="form-control" id="fotoPrato" name="foto" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="localPrato" class="form-label">Local</label>
-                            <input type="text" class="form-control" id="localPrato" name="local" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="cidadeEstadoPrato" class="form-label">Cidade-Estado</label>
-                            <input type="text" class="form-control" id="cidadeEstadoPrato" name="cidade_estado" required>
-                        </div>
-                        <div id="publicacaoError" class="text-danger d-none">Erro ao cadastrar publicação</div>
-                    </form>
+                    <div class="mb-3">
+                        <label for="nomePrato" class="form-label">Nome do Prato</label>
+                        <input type="text" class="form-control" id="nomePrato" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fotoPrato" class="form-label">URL da Foto</label>
+                        <input type="text" class="form-control" id="fotoPrato" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="localPrato" class="form-label">Local</label>
+                        <input type="text" class="form-control" id="localPrato" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cidadeEstadoPrato" class="form-label">Cidade-Estado</label>
+                        <input type="text" class="form-control" id="cidadeEstadoPrato" required>
+                    </div>
+                    <div id="publicacaoError" class="text-danger small mb-2 d-none"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success text-white" id="novaPublicacaoSubmit">Publicar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="novaPublicacaoSubmit">Publicar</button>
                 </div>
             </div>
         </div>

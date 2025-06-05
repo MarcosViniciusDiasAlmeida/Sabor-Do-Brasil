@@ -207,9 +207,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   publicacoesContainer.innerHTML = ""; // Limpa o conteúdo
 
+  if (publicacoes.length === 0) {
+    publicacoesContainer.innerHTML = `<div class='text-center text-muted py-5' style='font-size:1.2rem;'>Nenhuma publicação ainda</div>`;
+  }
+
   publicacoes.forEach(pub => {
+    const usuarioNome = pub.nome_usuario || '';
     publicacoesContainer.innerHTML += `
       <div class="card publicacao-card mb-2" style="width: 320px; min-height: 220px; margin: 0 auto; border: 1.5px solid #C2BEBE;">
+        <div class="card-header bg-white border-bottom-0 py-2 px-3" style="font-size:0.95rem;font-weight:500;">${usuarioNome}</div>
         <img src="${pub.foto}" class="card-img-top" alt="${pub.nome_prato}" style="height: 180px; object-fit: cover;">
         <div class="card-body p-2">
           <h6 class="card-title mb-1" style="font-size: 1rem;">${pub.nome_prato}</h6>
@@ -638,6 +644,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       } else {
         publicacaoError.textContent = 'Erro ao cadastrar publicação';
         publicacaoError.classList.remove('d-none');
+      }
+    });
+  }
+
+  // Botão de nova publicação ao lado do título
+  const novaPublicacaoBtn = document.getElementById('novaPublicacaoBtn');
+  if (novaPublicacaoBtn) {
+    novaPublicacaoBtn.addEventListener('click', function () {
+      const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
+      if (!usuario || !usuario.id) {
+        abrirModalLogin();
+      } else {
+        var modal = new bootstrap.Modal(document.getElementById('novaPublicacaoModal'));
+        modal.show();
       }
     });
   }
