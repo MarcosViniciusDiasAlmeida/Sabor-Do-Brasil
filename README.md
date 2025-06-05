@@ -2,6 +2,10 @@
 
 Sabor do Brasil é uma atividade desenvolvida como parte de uma avaliação do SAEP (Sistema de Avaliação da Educação Profissional). O objetivo do projeto é proporcionar uma experiência prática e educativa, permitindo que os alunos apliquem seus conhecimentos e habilidades em um contexto profissional. A atividade busca avaliar competências essenciais, como criatividade, habilidade técnica e capacidade de pesquisa, além de estimular o desenvolvimento de soluções inovadoras e eficientes.
 
+
+https://github.com/user-attachments/assets/d9f9f28c-fd61-4c8f-8bc2-de99569f651a
+
+
 ## Funcionalidades Principais
 
 - **Login de Usuários:**  
