@@ -568,4 +568,77 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = empresa.deslikes || 0;
     }
   }
+
+  // Cadastro de usuário
+  const registerSubmit = document.getElementById('registerSubmit');
+  if (registerSubmit) {
+    registerSubmit.addEventListener('click', async () => {
+      const nome = document.getElementById('registerNome').value.trim();
+      const email = document.getElementById('registerEmail').value.trim();
+      const senha = document.getElementById('registerSenha').value.trim();
+      const foto = document.getElementById('registerFoto').value.trim();
+      const registerError = document.getElementById('registerError');
+      registerError.classList.add('d-none');
+      if (!nome || !email || !senha || !foto) {
+        registerError.textContent = 'Preencha todos os campos.';
+        registerError.classList.remove('d-none');
+        return;
+      }
+      const resp = await fetch('/api/account/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, email, senha, foto })
+      });
+      if (resp.ok) {
+        // Cadastro ok, fecha modal e faz login automático
+        const user = await resp.json();
+        localStorage.setItem('usuarioLogado', JSON.stringify(user));
+        mostrarUsuario(user);
+        var modal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
+        modal.hide();
+      } else {
+        const erro = await resp.json();
+        registerError.textContent = erro.message || 'Erro ao cadastrar usuário';
+        registerError.classList.remove('d-none');
+      }
+    });
+  }
+
+  // Cadastro de nova publicação
+  const novaPublicacaoSubmit = document.getElementById('novaPublicacaoSubmit');
+  if (novaPublicacaoSubmit) {
+    novaPublicacaoSubmit.addEventListener('click', async () => {
+      const nome_prato = document.getElementById('nomePrato').value.trim();
+      const foto = document.getElementById('fotoPrato').value.trim();
+      const local = document.getElementById('localPrato').value.trim();
+      const cidade_estado = document.getElementById('cidadeEstadoPrato').value.trim();
+      const publicacaoError = document.getElementById('publicacaoError');
+      publicacaoError.classList.add('d-none');
+      const usuario = JSON.parse(localStorage.getItem('usuarioLogado'));
+      if (!usuario || !usuario.id) {
+        publicacaoError.textContent = 'Você precisa estar logado para publicar.';
+        publicacaoError.classList.remove('d-none');
+        return;
+      }
+      if (!nome_prato || !foto || !local || !cidade_estado) {
+        publicacaoError.textContent = 'Preencha todos os campos.';
+        publicacaoError.classList.remove('d-none');
+        return;
+      }
+      const resp = await fetch('/api/publicacao', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ IdUsuario: usuario.id, NomePrato: nome_prato, Foto: foto, Local: local, CidadeEstado: cidade_estado })
+      });
+      if (resp.ok) {
+        // Sucesso, fecha modal e recarrega publicações
+        var modal = bootstrap.Modal.getInstance(document.getElementById('novaPublicacaoModal'));
+        modal.hide();
+        window.location.reload();
+      } else {
+        publicacaoError.textContent = 'Erro ao cadastrar publicação';
+        publicacaoError.classList.remove('d-none');
+      }
+    });
+  }
 });

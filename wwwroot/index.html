@@ -138,9 +138,15 @@
 
             <!-- Login (Azul) -->
             <div class="col-md-3 text-center login mt-5">
-                <button id="loginButton" class="btn btn-warning text-white fw-bold" data-bs-toggle="modal"
+                <button id="loginButton" class="btn btn-warning text-white fw-bold w-100 mb-2" data-bs-toggle="modal"
                     data-bs-target="#loginModal">Entrar</button>
+                <button id="registerButton" class="btn btn-warning text-white fw-bold w-100 mb-2" data-bs-toggle="modal"
+                    data-bs-target="#registerModal">Cadastre-se</button>
                 <button id="logoutButton" class="btn btn-warning text-white fw-bold w-100 d-none">Sair</button>
+                <button id="novaPublicacaoButton" class="btn btn-success fw-bold w-100 mt-4 d-none" data-bs-toggle="modal"
+                    data-bs-target="#novaPublicacaoModal">
+                    Nova Publicação
+                </button>
             </div>
         </div>
     </div>
@@ -169,6 +175,81 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-warning text-white" id="loginSubmit">Entrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro de Usuário -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Cadastro de Usuário</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="registerNome" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="registerNome" name="nome" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">E-mail</label>
+                            <input type="email" class="form-control" id="registerEmail" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerSenha" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="registerSenha" name="senha" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerFoto" class="form-label">Foto (URL)</label>
+                            <input type="text" class="form-control" id="registerFoto" name="foto" required>
+                        </div>
+                        <div id="registerError" class="text-danger d-none">Erro ao cadastrar usuário</div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-warning text-white" id="registerSubmit">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Nova Publicação -->
+    <div class="modal fade" id="novaPublicacaoModal" tabindex="-1" aria-labelledby="novaPublicacaoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="novaPublicacaoModalLabel">Nova Publicação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="novaPublicacaoForm">
+                        <div class="mb-3">
+                            <label for="nomePrato" class="form-label">Nome do Prato</label>
+                            <input type="text" class="form-control" id="nomePrato" name="nome_prato" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fotoPrato" class="form-label">Foto (URL)</label>
+                            <input type="text" class="form-control" id="fotoPrato" name="foto" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="localPrato" class="form-label">Local</label>
+                            <input type="text" class="form-control" id="localPrato" name="local" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cidadeEstadoPrato" class="form-label">Cidade-Estado</label>
+                            <input type="text" class="form-control" id="cidadeEstadoPrato" name="cidade_estado" required>
+                        </div>
+                        <div id="publicacaoError" class="text-danger d-none">Erro ao cadastrar publicação</div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success text-white" id="novaPublicacaoSubmit">Publicar</button>
                 </div>
             </div>
         </div>
