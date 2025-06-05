@@ -99,14 +99,16 @@ body {
   display: flex;
   flex-direction: column;
 }
-main {
+.container {
   flex: 1 0 auto;
 }
 footer {
   flex-shrink: 0;
   width: 100%;
-  background: #f8f9fa;
-  border-top: 1px solid #e5e5e5;
-  padding: 16px 0 8px 0;
+  background: #D97014;
+  color: #FFFFFF;
+  padding: 32px 0 24px 0;
   text-align: center;
+  position: relative;
+  z-index: 100;
 }

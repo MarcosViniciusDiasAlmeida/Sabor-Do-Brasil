@@ -26,7 +26,9 @@ CREATE TABLE IF NOT EXISTS `init`.`usuario` (
   `email` VARCHAR(100) NOT NULL,
   `senha` VARCHAR(100) NOT NULL,
   `foto` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE (`email`)
+)
 ENGINE = InnoDB;
 
 
@@ -79,17 +81,16 @@ CREATE TABLE IF NOT EXISTS `init`.`curtidas` (
   PRIMARY KEY (`id`),
   INDEX `id_usuario_idx` (`id_usuario` ASC) VISIBLE,
   INDEX `id_publicacao_idx` (`id_publicacao` ASC) VISIBLE,
-  CONSTRAINT `id_usuario`
+  CONSTRAINT `fk_curtidas_usuario`
     FOREIGN KEY (`id_usuario`)
     REFERENCES `init`.`usuario` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `id_publicacao`
+  CONSTRAINT `fk_curtidas_publicacao`
     FOREIGN KEY (`id_publicacao`)
     REFERENCES `init`.`publicacao` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  -- Adiciona uma chave única para garantir que não existam combinações duplicadas
   CONSTRAINT `unique_like` UNIQUE (`id_usuario`, `id_publicacao`)
 ) ENGINE = InnoDB;
 
