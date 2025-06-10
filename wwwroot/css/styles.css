@@ -66,6 +66,19 @@
 
 .publicacoes {
     position: relative;
+    border: 2px solid #C2BEBE;
+    border-radius: 8px;
+    background: #fff;
+    padding: 16px 0;
+}
+
+.conteudo-principal {
+    border: 2px solid #C2BEBE;
+    border-radius: 8px;
+    margin: 24px auto;
+    padding: 16px 0;
+    background: #fff;
+    max-width: 1200px;
 }
 
 #comentarios-container {
