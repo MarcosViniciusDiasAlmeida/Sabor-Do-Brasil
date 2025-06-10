@@ -26,6 +26,9 @@ CREATE TABLE IF NOT EXISTS `init`.`usuario` (
   `email` VARCHAR(100) NOT NULL,
   `senha` VARCHAR(100) NOT NULL,
   `foto` VARCHAR(255) NOT NULL,
+  `nickname` VARCHAR(100) NULL,
+  `createdAt` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -36,7 +39,9 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `init`.`empresa` (
   `id` INT NOT NULL,
   `nome` VARCHAR(100) NOT NULL,
-  `foto` VARCHAR(255) NOT NULL,
+  `logo` VARCHAR(255) NOT NULL,
+  `createdAt` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -46,17 +51,20 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `init`.`publicacao` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `id_empresa` INT NOT NULL,
+  `empresa_id` INT NOT NULL,
   `id_usuarioss` INT NOT NULL,
-  `nome_prato` VARCHAR(50) NOT NULL,
+  `titulo_prato` VARCHAR(50) NOT NULL,
   `foto` VARCHAR(100) NOT NULL,
   `local` VARCHAR(100) NOT NULL,
-  `cidade-estado` VARCHAR(100) NOT NULL,
+  `cidade` VARCHAR(100) NOT NULL,
+  `estado` VARCHAR(50) NULL,
+  `createdAt` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `id_empresa_idx` (`id_empresa` ASC) VISIBLE,
+  INDEX `id_empresa_idx` (`empresa_id` ASC) VISIBLE,
   INDEX `id_usuarioss_idx` (`id_usuarioss` ASC) VISIBLE,
   CONSTRAINT `id_empresa`
-    FOREIGN KEY (`id_empresa`)
+    FOREIGN KEY (`empresa_id`)
     REFERENCES `init`.`empresa` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
@@ -123,14 +131,14 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-CREATE VIEW empresa_com_interacoes AS
+CREATE OR REPLACE VIEW empresa_com_interacoes AS
 SELECT 
   e.id,
   e.nome,
-  e.foto,
+  e.logo,
   COALESCE(SUM(CASE WHEN c.curtidas = 'Like' THEN 1 ELSE 0 END), 0) AS curtidas,
   COALESCE(SUM(CASE WHEN c.curtidas = 'Deslike' THEN 1 ELSE 0 END), 0) AS deslikes
 FROM empresa e
-LEFT JOIN publicacao p ON e.id = p.id_empresa
+LEFT JOIN publicacao p ON e.id = p.empresa_id
 LEFT JOIN curtidas c ON p.id = c.id_publicacao
-GROUP BY e.id, e.nome, e.foto;
+GROUP BY e.id, e.nome, e.logo;

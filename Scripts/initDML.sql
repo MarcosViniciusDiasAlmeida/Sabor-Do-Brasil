@@ -1,16 +1,17 @@
 USE init;
 
--- Inserir usuários
-INSERT INTO `init`.`usuario` (`nome`, `email`, `senha`, `foto`) VALUES
-('Ana Souza', 'ana@example.com', 'senha123', 'imagens/foto_usuario/usuario_01.jpg'),
-('Carlos Lima', 'luiza@example.com', '123456', 'imagens/foto_usuario/usuario_02.jpg');
+-- Inserir usuários (atualizado com base no CSV)
+INSERT INTO `init`.`usuario` (`id`, `nome`, `email`, `nickname`, `senha`, `foto`, `createdAt`, `updatedAt`) VALUES
+(1, 'usuario01', 'usuario01@usuario.com', 'usuario_01', '123456', 'usuario_01.jpg', '2023-06-22 09:13:55', '2023-06-22 09:14:55'),
+(2, 'usuario02', 'usuario02@usuario.com', 'usuario_02', '654321', 'usuario_02.jpg', '2023-02-22 09:13:55', '2023-02-22 09:13:58'),
+(3, 'usuario03', 'usuario03@usuario.com', 'usuario_03', '987654', 'usuario_03.jpg', '2023-08-22 09:13:55', '2023-08-22 09:15:55');
 
--- Inserir empresas
-INSERT INTO `init`.`empresa` (`id`, `nome`,`foto`) VALUES
-(1, 'Sabor do Brasil', 'imagens/logo/logo_sabor_do_brasil.png');
+-- Inserir empresas (atualizado com base no CSV)
+INSERT INTO `init`.`empresa` (`id`, `nome`, `logo`, `createdAt`, `updatedAt`) VALUES
+(1, 'Sabor do Brasil', 'logo_sabor_do_brasil.png', '2023-11-23 10:49:17', '2021-02-22 09:13:55');
 
--- Inserir publicações
-INSERT INTO `init`.`publicacao` (`id`, `id_empresa`, `id_usuarioss`, `nome_prato`, `foto`, `local`, `cidade-estado`) VALUES
-(1, 1, 1, 'Iscas de Tilápia', 'imagens/publicacao/publicacao01.png', 'Restaurante Central', 'São Paulo-SP'),
-(2, 1, 2, 'Bife à Diana', 'imagens/publicacao/publicacao02.png', 'Praia do Forte', 'Salvador-BA'),
-(3, 1, 1, 'Lombo suíno com maçãs caramelizadas', 'imagens/publicacao/publicacao03.png', 'Restaurante do Sertão', 'Fortaleza-CE');
+-- Inserir publicações (atualizado com base no CSV)
+INSERT INTO `init`.`publicacao` (`id`, `foto`, `titulo_prato`, `local`, `cidade`, `empresa_id`, `createdAt`, `updatedAt`) VALUES
+(1, 'publicacao01.png', 'Titulo do Prato 01', 'Local 01', 'Maceio-AL', 1, '2023-02-22 09:15:55', '2023-09-22 09:18:55'),
+(2, 'publicacao02.png', 'Titulo do Prato 02', 'Local 02', 'Minas Gerais-MG', 1, '2023-02-22 09:10:55', '2023-02-22 09:16:55'),
+(3, 'publicacao03.png', 'Titulo do Prato 03', 'Local 03', 'Rio de Janerio-RJ', 1, '2023-05-22 09:13:55', '2023-02-22 09:15:55');
