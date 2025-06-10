@@ -19,7 +19,7 @@ public class ComentariosController : ControllerBase
         {
             conn.Open();
             var cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT c.id, c.id_usuarios, c.descricao, c.foto_perfil, u.nome AS nome_usuario
+            cmd.CommandText = @"SELECT c.id, c.id_usuarios, c.descricao, c.foto_perfil, u.nome AS nome_usuario, c.data_comentario
                                 FROM comentarios c
                                 JOIN usuario u ON u.id = c.id_usuarios
                                 WHERE c.id_publicacao = @id
@@ -35,7 +35,8 @@ public class ComentariosController : ControllerBase
                         id_usuario = reader["id_usuarios"],
                         descricao = reader["descricao"],
                         foto_perfil = reader["foto_perfil"],
-                        nome_usuario = reader["nome_usuario"]
+                        nome_usuario = reader["nome_usuario"],
+                        data_comentario = reader["data_comentario"]
                     });
                 }
             }

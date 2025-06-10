@@ -17,17 +17,23 @@ public class PublicacaoController : ControllerBase
         {
             conn.Open();
             var cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT id, nome_prato, foto, local, `cidade-estado` FROM publicacao";
+            cmd.CommandText = "SELECT id, titulo_prato, foto, local, cidade, estado, empresa_id, id_usuarioss, createdAt, updatedAt FROM publicacao";
             using (var reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    lista.Add(new {
+                    lista.Add(new
+                    {
                         id = reader["id"],
-                        nome_prato = reader["nome_prato"],
+                        titulo_prato = reader["titulo_prato"],
                         foto = reader["foto"],
                         local = reader["local"],
-                        cidade_estado = reader["cidade-estado"]
+                        cidade = reader["cidade"],
+                        estado = reader["estado"],
+                        empresa_id = reader["empresa_id"],
+                        id_usuarioss = reader["id_usuarioss"],
+                        createdAt = reader["createdAt"],
+                        updatedAt = reader["updatedAt"]
                     });
                 }
             }
