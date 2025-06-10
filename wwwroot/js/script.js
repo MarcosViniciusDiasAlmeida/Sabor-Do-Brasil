@@ -210,12 +210,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   publicacoes.forEach(pub => {
     publicacoesContainer.innerHTML += `
       <div class="card publicacao-card mb-2" style="width: 320px; min-height: 220px; margin: 0 auto; border: 1.5px solid #C2BEBE;">
-        <img src="${pub.foto}" class="card-img-top" alt="${pub.nome_prato}" style="height: 180px; object-fit: cover;">
+        <img src="imagens/publicacao/${pub.foto}" class="card-img-top" alt="${pub.titulo_prato}" style="height: 180px; object-fit: cover;">
         <div class="card-body p-2">
-          <h6 class="card-title mb-1" style="font-size: 1rem;">${pub.nome_prato}</h6>
+          <h6 class="card-title mb-1" style="font-size: 1rem;">${pub.titulo_prato}</h6>
           <div class="d-flex justify-content-between small">
             <span style="font-size: 0.9rem;">${pub.local}</span>
-            <span style="font-size: 0.9rem;">${pub.cidade_estado}</span>
+            <span style="font-size: 0.9rem;">${pub.cidade}${pub.estado && typeof pub.estado === 'string' ? ' - ' + pub.estado : ''}</span>
           </div>
           <div class="d-flex justify-content-between mt-2">
             <div>
