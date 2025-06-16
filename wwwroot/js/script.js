@@ -449,13 +449,23 @@ document.addEventListener("DOMContentLoaded", async () => {
               const div = lista.querySelector(`[data-comentario-id='${idComentario}']`);
               const textoSpan = div.querySelector('.comentario-texto');
               const textoOriginal = textoSpan.textContent;
-              textoSpan.outerHTML = `<textarea class='form-control form-control-sm comentario-editar-textarea' style='display:inline-block;width:60%;'>${textoOriginal}</textarea>`;
+              // Substitui o texto por um bloco de edição alinhado corretamente
+              textoSpan.parentElement.innerHTML = `
+                <div class="d-flex flex-column align-items-start w-100">
+                  <div class="d-flex align-items-center mb-2">
+                    <img src="${div.querySelector('img').src}" alt="perfil" style="width:32px;height:32px;border-radius:50%;margin-right:8px;">
+                    <strong>${div.querySelector('strong').textContent}</strong>
+                  </div>
+                  <textarea class='form-control form-control-sm comentario-editar-textarea mb-2' style='width:100%;max-width:100%;'>${textoOriginal}</textarea>
+                  <div>
+                    <button class='btn btn-success btn-sm me-2 salvar-edicao'>Salvar</button>
+                    <button class='btn btn-secondary btn-sm cancelar-edicao'>Cancelar</button>
+                  </div>
+                </div>
+              `;
               this.classList.add('d-none');
-              const salvarBtn = document.createElement('button');
-              salvarBtn.className = 'btn btn-sm btn-success ms-2 salvar-edicao';
-              salvarBtn.textContent = 'Salvar';
-              div.appendChild(salvarBtn);
-              salvarBtn.onclick = async function () {
+              // Evento salvar
+              div.querySelector('.salvar-edicao').onclick = async function () {
                 const novoTexto = div.querySelector('.comentario-editar-textarea').value.trim();
                 if (!novoTexto) return;
                 await fetch(`/api/comentarios/${idComentario}`, {
@@ -464,6 +474,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                   body: JSON.stringify({ idUsuario: usuario.id, descricao: novoTexto })
                 });
                 await carregarComentarios(idPub);
+              };
+              // Evento cancelar
+              div.querySelector('.cancelar-edicao').onclick = function () {
+                carregarComentarios(idPub);
               };
             };
           });
