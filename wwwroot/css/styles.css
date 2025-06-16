@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+html, body, * {
+    font-family: 'Inter', Arial, Helvetica, sans-serif !important;
+}
+
 .perfil img {
     width: 140px !important;
     height: 140px !important;
