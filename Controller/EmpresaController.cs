@@ -15,7 +15,7 @@ public class EmpresaController : ControllerBase
         {
             conn.Open();
             var cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT id, nome, foto, curtidas, deslikes FROM empresa_com_interacoes WHERE id = @id";
+            cmd.CommandText = @"SELECT id, nome, logo, curtidas, deslikes FROM empresa_com_interacoes WHERE id = @id";
             cmd.Parameters.AddWithValue("@id", id);
             using (var reader = cmd.ExecuteReader())
             {
@@ -25,7 +25,7 @@ public class EmpresaController : ControllerBase
                     {
                         id = reader["id"],
                         nome = reader["nome"],
-                        foto = reader["foto"],
+                        logo = reader["logo"],
                         curtidas = reader["curtidas"],
                         deslikes = reader["deslikes"]
                     });
