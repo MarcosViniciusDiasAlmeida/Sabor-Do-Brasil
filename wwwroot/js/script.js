@@ -490,11 +490,11 @@ document.addEventListener("DOMContentLoaded", async () => {
           <div class="card-body">
             <h6 class="mb-3">Comentários</h6>
             <div id="lista-comentarios"></div>
-            <div class="mt-3">
-              <textarea id="novoComentario" class="form-control mb-2" rows="2" placeholder="Escreva seu comentário..."></textarea>
-              <div id="comentarioErro" class="text-danger small mb-2 d-none"></div>
-              <button id="btnComentar" class="btn btn-warning text-white">Comentar</button>
-              <button id="btnVoltar" class="btn btn-outline-secondary ms-2">Voltar</button>
+            <textarea id="novoComentario" class="form-control mb-2 mt-3" rows="2" placeholder="Escreva seu comentário..."></textarea>
+            <div id="comentarioErro" class="text-danger small mb-2 d-none"></div>
+            <div class="d-flex justify-content-end gap-2">
+              <button id="btnVoltar" class="btn btn-outline-secondary">Voltar</button>
+              <button id="btnComentar" class="btn btn-warning text-white" disabled>Comentar</button>
             </div>
           </div>
         </div>
@@ -502,10 +502,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       comentariosContainer.innerHTML = html;
       await carregarComentarios(idPub);
 
+      // Habilita/desabilita o botão comentar conforme o texto
+      const novoComentario = document.getElementById('novoComentario');
+      const btnComentar = document.getElementById('btnComentar');
+      novoComentario.addEventListener('input', function() {
+        btnComentar.disabled = this.value.trim().length === 0;
+      });
+
       // Evento de comentar
-      document.getElementById('btnComentar').onclick = async () => {
+      btnComentar.onclick = async () => {
         const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-        const texto = document.getElementById('novoComentario').value.trim();
+        const texto = novoComentario.value.trim();
         if (!usuario || !usuario.id) {
           abrirModalLogin();
           return;
@@ -522,7 +529,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           })
         });
         // Limpa o campo
-        document.getElementById('novoComentario').value = '';
+        novoComentario.value = '';
+        btnComentar.disabled = true;
         // Recarrega a lista de comentários (com os botões de editar/excluir)
         await carregarComentarios(idPub);
       };
