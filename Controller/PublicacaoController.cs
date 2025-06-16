@@ -17,7 +17,11 @@ public class PublicacaoController : ControllerBase
         {
             conn.Open();
             var cmd = conn.CreateCommand();
-            cmd.CommandText = "SELECT id, nome_prato, foto, local, `cidade-estado` FROM publicacao";
+            cmd.CommandText = @"
+  SELECT p.id, p.nome_prato, p.foto, p.local, p.`cidade-estado`, p.id_usuario, u.nome AS nome_usuario
+  FROM publicacao p
+  JOIN usuario u ON u.id = p.id_usuario
+";
             using (var reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
@@ -27,7 +31,9 @@ public class PublicacaoController : ControllerBase
                         nome_prato = reader["nome_prato"],
                         foto = reader["foto"],
                         local = reader["local"],
-                        cidade_estado = reader["cidade-estado"]
+                        cidade_estado = reader["cidade-estado"],
+                        id_usuario = reader["id_usuario"],
+                        nome_usuario = reader["nome_usuario"]
                     });
                 }
             }
@@ -51,6 +57,27 @@ public class PublicacaoController : ControllerBase
         await cmd.ExecuteNonQueryAsync();
         var id = cmd.LastInsertedId;
         return Ok(new { id, model.NomePrato, model.Foto, model.Local, model.CidadeEstado });
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(long id, [FromQuery] long idUsuario)
+    {
+        using var conn = new MySqlConnection(_config.GetConnectionString("DefaultConnection"));
+        conn.Open();
+        // Verifica se a publicação pertence ao usuário
+        var checkCmd = conn.CreateCommand();
+        checkCmd.CommandText = "SELECT COUNT(*) FROM publicacao WHERE id = @id AND id_usuario = @idUsuario";
+        checkCmd.Parameters.AddWithValue("@id", id);
+        checkCmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+        var count = Convert.ToInt32(checkCmd.ExecuteScalar());
+        if (count == 0)
+            return Forbid();
+        // Exclui a publicação
+        var delCmd = conn.CreateCommand();
+        delCmd.CommandText = "DELETE FROM publicacao WHERE id = @id";
+        delCmd.Parameters.AddWithValue("@id", id);
+        delCmd.ExecuteNonQuery();
+        return NoContent();
     }
 }
 

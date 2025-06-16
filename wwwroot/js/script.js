@@ -48,6 +48,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Mostra contadores de likes/dislikes do perfil
     document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = '0';
     document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = '0';
+    // Mostra ícones de lixeira das publicações do usuário logado
+    setTimeout(() => {
+      const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+      document.querySelectorAll('.publicacao-card').forEach(card => {
+        const btn = card.querySelector('.excluir-publicacao');
+        if (btn && btn.dataset.idusuario == usuario?.id) {
+          btn.classList.remove('d-none');
+        }
+      });
+    }, 100);
   }
 
   // Função para esconder dados do usuário logado
@@ -65,6 +75,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll('.dislike-btn').forEach(btn => btn.classList.remove('liked'));
     // Remove botões de ação dos comentários se estiverem visíveis
     document.querySelectorAll('.editar-comentario, .excluir-comentario, .salvar-edicao').forEach(btn => btn.remove());
+    // Remove ícones de lixeira das publicações
+    document.querySelectorAll('.excluir-publicacao').forEach(btn => btn.classList.add('d-none'));
     // Fecha overlay de comentários e volta para a página principal
     const comentariosContainer = document.getElementById('comentarios-container');
     if (comentariosContainer) {
@@ -216,9 +228,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   publicacoes.forEach(pub => {
     const usuarioNome = pub.nome_usuario || '';
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+    const podeExcluir = usuarioLogado && usuarioLogado.id == pub.id_usuario;
     publicacoesContainer.innerHTML += `
-      <div class="card publicacao-card mb-2" style="width: 320px; min-height: 220px; margin: 0 auto; border: 1.5px solid #C2BEBE;">
-        <div class="card-header bg-white border-bottom-0 py-2 px-3" style="font-size:0.95rem;font-weight:500;">${usuarioNome}</div>
+      <div class="card publicacao-card mb-2" style="width: 320px; min-height: 220px; margin: 0 auto; border: 1.5px solid #C2BEBE; position: relative;">
+        <div class="d-flex justify-content-between align-items-center px-3 pt-2 pb-1" style="background:#f8f9fa; border-bottom:1px solid #eee; border-radius:8px 8px 0 0;">
+          <span class="fw-semibold" style="font-size:0.97rem;">${usuarioNome}</span>
+          ${podeExcluir ? `<button class='btn btn-link p-0 m-0 text-danger excluir-publicacao' data-id='${pub.id}' title='Excluir publicação' data-idusuario='${pub.id_usuario}'><i class='bi bi-trash3' style='font-size:1.2rem;'></i></button>` : ''}
+        </div>
         <img src="${pub.foto}" class="card-img-top" alt="${pub.nome_prato}" style="height: 180px; object-fit: cover;">
         <div class="card-body p-2">
           <h6 class="card-title mb-1" style="font-size: 1rem;">${pub.nome_prato}</h6>
@@ -686,4 +703,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
   }
+
+  // Evento de exclusão de publicação (ajustado para novo botão)
+  publicacoesContainer.addEventListener('click', async function(e) {
+    if (e.target.closest('.excluir-publicacao')) {
+      e.preventDefault();
+      const id = e.target.closest('.excluir-publicacao').dataset.id;
+      if (confirm('Tem certeza que deseja excluir esta publicação?')) {
+        const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+        if (!usuario || !usuario.id) {
+          alert('Você precisa estar logado para excluir publicações.');
+          return;
+        }
+        const resp = await fetch(`/api/publicacao/${id}?idUsuario=${usuario.id}`, { method: 'DELETE' });
+        if (resp.ok) {
+          e.target.closest('.publicacao-card').remove();
+        } else {
+          alert('Erro ao excluir publicação.');
+        }
+      }
+    }
+  });
 });
