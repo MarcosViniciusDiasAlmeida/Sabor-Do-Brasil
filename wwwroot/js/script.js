@@ -77,6 +77,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelectorAll('.editar-comentario, .excluir-comentario, .salvar-edicao').forEach(btn => btn.remove());
     // Remove ícones de lixeira das publicações
     document.querySelectorAll('.excluir-publicacao').forEach(btn => btn.classList.add('d-none'));
+    // Limpa campos do modal de login
+    if (loginForm) {
+      loginForm.email.value = '';
+      loginForm.password.value = '';
+      loginForm.email.classList.remove('is-invalid');
+      loginForm.password.classList.remove('is-invalid');
+      if (loginError) loginError.classList.add('d-none');
+    }
     // Fecha overlay de comentários e volta para a página principal
     const comentariosContainer = document.getElementById('comentarios-container');
     if (comentariosContainer) {
