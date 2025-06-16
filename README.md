@@ -10,13 +10,13 @@ https://github.com/user-attachments/assets/d9f9f28c-fd61-4c8f-8bc2-de99569f651a
 
 - **Login de Usuários:**  
   O acesso é feito apenas por login. Não há cadastro de novos usuários.  
-  **Usuário de teste:**  
-  - **E-mail:** ana@example.com  
-  - **Senha:** senha123
-  
-  Ou 
-  - **E-mail:** luiza@example.com
-  - **Senha:** 123456
+  **Usuários de teste:**  
+  - **E-mail:** usuario01@usuario.com  
+    **Senha:** 123456
+  - **E-mail:** usuario02@usuario.com  
+    **Senha:** 654321
+  - **E-mail:** usuario03@usuario.com  
+    **Senha:** 987654
 
 
 - **Perfil do Usuário:**  
@@ -45,7 +45,7 @@ https://github.com/user-attachments/assets/d9f9f28c-fd61-4c8f-8bc2-de99569f651a
 
 ## Tecnologias Utilizadas
 
-- **Front-end:** HTML5, CSS3, Bootstrap, JavaScript
+- **Front-end:** HTML5, CSS3, Bootstrap, JavaScript, Google Fonts (Inter)
 - **Back-end:** ASP.NET Core
 - **Banco de Dados:** MySQL
 - **Outros:** Entity Framework, API RESTful
@@ -58,13 +58,16 @@ https://github.com/user-attachments/assets/d9f9f28c-fd61-4c8f-8bc2-de99569f651a
 2. **Acesse a plataforma:**  
    Abra o site no navegador.
 
-3. **Login:**  
-   Clique em "Entrar" e utilize o usuário de teste informado acima.
+3. **Fonte Inter:**  
+   Todo o site utiliza a fonte Inter para os textos, carregada automaticamente via Google Fonts.
 
-4. **Interaja com as publicações:**  
+4. **Login:**  
+   Clique em "Entrar" e utilize um dos usuários de teste informados acima.
+
+5. **Interaja com as publicações:**  
    Curta, descurta e comente nos pratos apresentados.
 
-5. **Gerencie seu perfil:**  
+6. **Gerencie seu perfil:**  
    Veja sua foto, nome e estatísticas de interação.
 
 ## Estrutura do Projeto
