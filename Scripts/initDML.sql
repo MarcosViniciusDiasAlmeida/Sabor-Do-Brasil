@@ -1,6 +1,5 @@
 USE init;
 
-
 INSERT INTO `init`.`usuario` (`id`, `nome`, `email`, `nickname`, `senha`, `foto`, `createdAt`, `updatedAt`) VALUES
 (1, 'usuario01', 'usuario01@usuario.com', 'usuario_01', '123456', 'imagens/foto_usuario/usuario_01.jpg', '2023-06-22 09:13:55', '2023-06-22 09:14:55'),
 (2, 'usuario02', 'usuario02@usuario.com', 'usuario_02', '654321', 'imagens/foto_usuario/usuario_02.jpg', '2023-02-22 09:13:55', '2023-02-22 09:13:58'),
