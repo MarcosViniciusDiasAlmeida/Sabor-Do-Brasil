@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const logoutButton = document.getElementById("logoutButton");
   const loginForm = document.getElementById("loginForm");
   const loginError = document.getElementById("loginError");
+  const registerButton = document.getElementById("registerButton");
 
   // Remove qualquer is-invalid ao abrir o modal de login
   const loginModal = document.getElementById('loginModal');
@@ -43,6 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById('userPhoto').src = user.foto;
     loginButton.classList.add("d-none");
     logoutButton.classList.remove("d-none");
+    if (registerButton) registerButton.classList.add("d-none");
     // Mostra contadores de likes/dislikes do perfil
     document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = '0';
     document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = '0';
@@ -54,6 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById('userPhoto').src = "imagens/logo/logo_sabor_do_brasil.png";
     loginButton.classList.remove("d-none");
     logoutButton.classList.add("d-none");
+    if (registerButton) registerButton.classList.remove("d-none");
     // Zera contadores de likes/dislikes do perfil
     document.querySelector('.perfil .likes .col-6:nth-child(1) span').textContent = '0';
     document.querySelector('.perfil .likes .col-6:nth-child(2) span').textContent = '0';
@@ -505,7 +508,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Habilita/desabilita o botão comentar conforme o texto
       const novoComentario = document.getElementById('novoComentario');
       const btnComentar = document.getElementById('btnComentar');
-      novoComentario.addEventListener('input', function() {
+      novoComentario.addEventListener('input', function () {
         btnComentar.disabled = this.value.trim().length === 0;
       });
 
